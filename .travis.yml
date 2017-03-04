@@ -22,6 +22,8 @@ before_install:
   - env
   - pwd
   - find -ls
+## kitchen can't transfer symlink
+  - cd .. && cp -R ansible-lufi noplanman.lufi && cd noplanman.lufi
 ## use appropriate role path and not github name
   - sudo pip install ansible
   - gem install kitchen
