@@ -1,8 +1,28 @@
 ---
 
+- name: Include version-specific variables for Ubuntu.
+  include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
+  when: ansible_distribution == 'Ubuntu'
+- name: Include version-specific variables for RedHat
+  include_vars: "RedHat-{{ ansible_distribution_version.split('.')[0] }}.yml"
+  when: ansible_os_family == "RedHat"
+
 - include: install.yml
   tags: lufi:install
+
+- include: user.yml
+  when: lufi_user != 'www-data'
+
+- name: ensure .cpanm directory exists for lufi user
+  file: dest={{ lufi_home }}/.cpanm state=directory owner={{ lufi_user }} mode=0700
+
+  tags: lufi:site
 - include: site.yml
   tags: lufi:site
+  become: yes
+  become_user: "{{ lufi_user }}"
+
 - include: service-{{ ansible_service_mgr }}.yml
   tags: lufi:service
+- include: cron.yml
+  tags: lufi:cron

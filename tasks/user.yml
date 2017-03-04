@@ -1,0 +1,12 @@
+
+- name: ensure lufi group exists
+  group:
+    name: "{{ lufi_group }}"
+
+- name: ensure lufi user exists
+  user:
+    name: "{{ lufi_user }}" 
+    groups: "{{ lufi_group }}"
+    append: yes
+    home: "{{ lufi_home }}"
+

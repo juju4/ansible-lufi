@@ -1,0 +1,12 @@
+---
+
+lufi_pkg_deps:
+  - build-essential
+  - git
+  - libssl-dev
+  - cpanminus
+  - cron
+
+www_user: www-data
+www_root: /var/www
+nginx_sitedir: /etc/nginx/site-available

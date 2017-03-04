@@ -1,0 +1,41 @@
+## from https://framagit.org/luc/lufi/wikis/installation
+
+server {
+    listen 80;
+
+    # Adapt this to your domain!
+    server_name {{ lufi_servername }};
+
+    access_log /var/log/nginx/lufi.success.log;
+    error_log /var/log/nginx/lufi.error.log;
+
+    location / {
+        # Add cache for static files
+        if ($request_uri ~* ^/(img|css|font|js)/) {
+            add_header Expires "Thu, 31 Dec 2037 23:55:55 GMT";
+            add_header Cache-Control "public, max-age=315360000";
+        }
+        # HTTPS only header, improves security
+        #add_header Strict-Transport-Security "max-age=15768000";
+
+        # Adapt this to your configuration (port, subdirectory (see below))
+        proxy_pass  http://{{ lufi_origin }};
+
+        # Really important! Lufi uses WebSocket, it won't work without this
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+        # If you want to log the remote port of the file senders, you'll need that
+        proxy_set_header X-Remote-Port $remote_port;
+
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        # We expect the downstream servers to redirect to the right hostname, so don't do any rewrites here.
+        proxy_redirect     off;
+    }
+}

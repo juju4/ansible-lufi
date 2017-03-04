@@ -1,0 +1,18 @@
+---
+
+- name: install lufi nginx reverseproxy configuration
+  template:
+    src: lufi-nginx.conf.j2
+    dest: {{ nginx_sitedir }}/lufi.conf
+    mode: '0644'
+    backup: yes
+  when: lufi_reverseproxy is defined and lufi_reverseproxy == 'nginx'
+
+- name: install lufi apache reverseproxy configuration
+  template:
+    src: lufi-apache.conf.j2
+    dest: {{ apache_sitedir }}/lufi.conf
+    mode: '0644'
+    backup: yes
+  when: lufi_reverseproxy is defined and lufi_reverseproxy == 'apache'
+

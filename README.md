@@ -33,9 +33,10 @@ There are a few mandatory and many optional values. Check all possible variables
 ```
 # Required!
 lufi_working_dir: "/var/www/example.com"
-lufi_listen: "http://127.0.0.1:8080"
+lufi_listen:
+  - 'http://127.0.0.1:8080'
+  - "http://{{ ansible_default_ipv4.address }}:8080"
 lufi_contact: "admin@example.com"
-lufi_secrets: ["array", "of", "random", "secrets"]
 
 # Optional
 lufi_theme: "default"
@@ -99,6 +100,11 @@ lufi_contact: "admin@lufi.example.com"
 lufi_secrets: ["xud7ooJu","aiNg7duG","ih7kom8Z","Ocaish3I","Ooja7chi","Eet4weil","Ethee4Go","xahJ0ohy"]
 lufi_broadcast_message: "Welcome to Lufi. Upload those files!"
 ```
+
+## FAQ
+
+* files are written encrypted in {{ lufi_working_dir }}/files
+* activity log is inside lufi.db(sqlite3) and log/production.log
 
 ## License
 

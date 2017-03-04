@@ -1,0 +1,28 @@
+## https://framagit.org/luc/lufi/wikis/installation as virtualhost
+
+    # HTTPS only header, improves security
+    # Header always set Strict-Transport-Security "max-age=63072000; preload"
+
+    # Lufi
+    ProxyPreserveHost On
+    ProxyRequests off
+    RewriteEngine On
+    RewriteCond %{HTTP:Connection} upgrade [NC]
+    RewriteCond %{HTTP:Upgrade} websocket [NC]
+    # Adapt this to your configuration
+    RewriteRule ^/lufi/(.*) ws://{{ lufi_origin }}/lufi/$1 [P,L]
+    # HTTPS only, use instead of the above line (note the "wss" instead of "ws")
+    #RewriteRule ^/lufi/(.*) wss://127.0.0.1:8081/lufi/$1 [P,L]
+
+    RequestHeader unset X-Forwarded-Proto
+    RequestHeader add X-Remote-Port %{R_P}e
+    # HTTPS only, but won't be used if you use HTTP. You can leave it.
+    RequestHeader set X-Forwarded-Proto https env=HTTPS
+
+    <Location /lufi>
+        # Adapt this to your configuration
+        ProxyPass http://{{ lufi_origin }}/lufi
+        ProxyPassReverse /lufi
+        LimitRequestBody 104857600
+    </Location>
+

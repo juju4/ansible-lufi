@@ -1,0 +1,14 @@
+---
+
+lufi_pkg_deps:
+  - gcc
+  - make
+  - perl
+  - git
+  - openssl-devel
+  - perl-App-cpanminus
+  - crontabs
+
+www_user: apache
+#www_user: nginx
+www_root: '/var/www'

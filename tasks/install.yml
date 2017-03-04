@@ -3,19 +3,19 @@
 - name: Lufi | Update apt cache
   apt: update_cache=yes cache_valid_time=86400
   changed_when: no
+  when: ansible_os_family == 'Debian'
 
 - name: Lufi | Install essential packages
-  apt: name="{{ item }}" state=present
-  with_items:
-    - build-essential
-    - git
-    - libssl-dev
+  package: name="{{ item }}" state=present
+  with_items: "{{ lufi_pkg_deps }}"
 
-- name: Lufi | Install cpanm
-  get_url:
-    url: https://cpanmin.us
-    dest: /usr/local/bin/cpanm
-    mode: 0555
+#- name: Lufi | Install cpanm
+#  get_url:
+#    url: https://cpanmin.us
+#    dest: /usr/local/bin/cpanm
+#    mode: 0555
+#    checksum: 'sha256:453e68066f2faba5c9fe04b4ca47f915fe0001f71405560093a23919e5e30d65.'
 
 - name: Lufi | Install Carton
-  command: creates=/usr/local/bin/carton cpanm Carton
+  cpanm:
+    name: Carton

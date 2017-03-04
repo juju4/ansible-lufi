@@ -8,7 +8,11 @@
     # see http://mojolicio.us/perldoc/Mojo/Server/Hypnotoad for a full list of settings
     hypnotoad => {
         # array of IP addresses and ports you want to listen to
-        listen => ['{{ lufi_listen }}'],
+        listen => [
+{% for url in lufi_listen %}
+                    '{{ url }}',
+{% endfor %}
+                    ],
         # if you use Lufi behind a reverse proxy like Nginx, you want ro set proxy to 1
         # if you use Lufi directly, let it commented
         #proxy  => 1,
@@ -24,13 +28,15 @@
 
     # put a way to contact you here and uncomment it
     # MANDATORY
-    #contact       => 'admin[at]example.com',
     contact => '{{ lufi_contact }}',
 
     # array of random strings used to encrypt cookies
     # optional, default is ['fdjsofjoihrei'], PLEASE, CHANGE IT
-    #secrets        => ['fdjsofjoihrei'],
-    secrets => {{ lufi_secrets | to_json }},
+    secrets => [
+{% for s in salt %}
+                    '{{ s }}',
+{% endfor %}
+                ],
 
     # choose a theme. See the available themes in `themes` directory
     # optional, default is 'default'

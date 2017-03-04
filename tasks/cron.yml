@@ -1,0 +1,28 @@
+
+- name: lufi cron - cleanbdd once a week
+  cron:
+    name: lufi cron cleanbdd
+    weekday: 2
+    minute: 0
+    hour: 12
+    user: "{{ www_user }}"
+    job: "cd {{ lufi_working_dir }}/ && carton exec script/lufi cron cleanbdd 2>&1 > /tmp/cron-lufi-cleanbdd"
+    cron_file: ansible_lufi-cleanbdd
+
+- name: lufi cron - cleanfiles once a week
+  cron:
+    name: lufi cron cleanfiles
+    weekday: 2
+    minute: 0
+    hour: 12
+    user: "{{ www_user }}"
+    job: "cd {{ lufi_working_dir }}/ && carton exec script/lufi cron cleanfiles 2>&1 > /tmp/cron-lufi-cleanfiles"
+    cron_file: ansible_lufi-cleanfiles
+
+- name: lufi cron - watch
+  cron:
+    name: lufi cron watch
+    minute: 32
+    user: "{{ www_user }}"
+    job: "cd {{ lufi_working_dir }}/ && carton exec script/lufi watch warn"
+    cron_file: ansible_lufi-cleanfiles

@@ -1,0 +1,26 @@
+
+- set_fact:
+    secretdir: "{{ lufi_working_dir }}"
+
+- name: ensure openssl is present
+  package: name=openssl state=present
+- name: Generating salt
+  shell: "(for i in `seq 10`; do openssl rand -base64 32 | sed 's@[=\\/\\+]@@g;'; done) | tee {{ secretdir }}/.lufi_secrets creates={{ secretdir }}/.lufi_secrets"
+  register: secrets
+  changed_when: false
+- stat: path="{{ secretdir }}/.lufi_secrets"
+  register: s
+- name: Recover existing salt
+  command: "cat {{ secretdir }}/.lufi_secrets"
+  changed_when: false
+  register: s2
+  when: s.stat.exists
+- set_fact:
+    salt: "{{ secrets.stdout_lines }}"
+  when: secrets.changed
+- set_fact:
+    salt: "{{ s2.stdout_lines }}"
+  when: s.stat.exists
+
+#- debug: var=salt
+
