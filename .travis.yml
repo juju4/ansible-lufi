@@ -16,6 +16,8 @@ before_install:
 
 install:
   # Install ansible.
+  - "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
+  - "echo \"[test-kitchen]\nlocalhost\" > inventory"
   - if [ "$ANSIBLE_VERSION" = "latest" ]; then pip install --no-binary ansible ansible; else pip install --no-binary ansible ansible==$ANSIBLE_VERSION; fi
 
   # Check ansible version.
