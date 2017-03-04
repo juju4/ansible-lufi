@@ -23,6 +23,7 @@ before_install:
   - env
   - pwd
   - find -ls
+  - cd .. && cp -R ansible-lufi noplanman.lufi && cd noplanman.lufi
 ## No Xenial, https://github.com/travis-ci/travis-ci/issues/5821
 #  - sudo apt install lxd
   - echo "deb http://archive.ubuntu.com/ubuntu trusty-backports main restricted universe multiverse" | sudo tee /etc/apt/sources.list.d/trusty-backports.list
