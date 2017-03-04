@@ -24,5 +24,7 @@
 
 - include: service-{{ ansible_service_mgr }}.yml
   tags: lufi:service
+  when: ansible_service_mgr == 'sysvinit' or ansible_service_mgr == 'upstart' or ansible_service_mgr == 'systemd'
+
 - include: cron.yml
   tags: lufi:cron
