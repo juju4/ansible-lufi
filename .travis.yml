@@ -1,41 +1,43 @@
-sudo: required
+---
 dist: trusty
-
-language: python
-python: "2.7"
+sudo: required
+rvm:
+  - 2.2
 
 env:
-  - ANSIBLE_VERSION=latest
-  - ANSIBLE_VERSION=2.1.0.0
-  - ANSIBLE_VERSION=2.0.2.0
-  - ANSIBLE_VERSION=2.0.0.0
+#  - distribution: centos
+#    version: 6
+  - distribution: centos
+    version: 7
+  - distribution: ubuntu
+    version: 16.04
+  - distribution: ubuntu
+    version: 14.04
+#  - distribution: ubuntu
+#    version: 12.04
+#  - distribution: alpine
+#    version: 3.4
 
 before_install:
-  - sudo apt-get update -qq
-  - ln -s ansible-lufi ../noplanman.lufi
-
-install:
-  # Install ansible.
-  - "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
-  - "echo \"[test-kitchen]\nlocalhost\" > inventory"
-  - if [ "$ANSIBLE_VERSION" = "latest" ]; then pip install --no-binary ansible ansible; else pip install --no-binary ansible ansible==$ANSIBLE_VERSION; fi
-
-  # Check ansible version.
-  - ansible --version
+  - env
+  - pwd
+  - find -ls
+## use appropriate role path and not github name
+  - sudo pip install ansible
+  - gem install kitchen
+  - gem install kitchen-ansible
+  - gem install kitchen-sync
+  - gem install kitchen-docker
+  - gem list
+  - which kitchen
+  - KITCHEN_YAML=.kitchen.docker.yml kitchen diagnose --all
 
 script:
-  # Check the role/playbook's syntax.
-  - ansible-playbook -i inventory test/integration/default/default.yml --syntax-check
-
-  # Run the role/playbook with ansible-playbook.
-  - ansible-playbook -i inventory --connection=local --sudo test/integration/default/default.yml -vvvv
-
-  # Run the role/playbook again, checking to make sure it's idempotent.
-  - >
-    ansible-playbook -i inventory --connection=local --sudo test/integration/default/default.yml
-    | grep -q 'changed=0.*failed=0'
-    && (echo 'Idempotence test: pass' && exit 0)
-    || (echo 'Idempotence test: fail' && exit 1)
+## avoid locale issue under xenial docker, https://github.com/pypa/pip/issues/3575
+  - export LC_ALL=C.UTF-8
+  - export LANG=C.UTF-8
+  - KITCHEN_YAML=.kitchen.docker.yml kitchen verify ${distribution}-${version//./}
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
+
