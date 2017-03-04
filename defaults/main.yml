@@ -10,7 +10,7 @@ lufi_keep_updated: yes
 lufi_working_dir: "{{ lufi_home }}/src"
 lufi_listen:
    - 'http://127.0.0.1:8080'
-   - "http://{{ ansible_default_ipv4.address }}:8080"
+#   - "http://{{ ansible_default_ipv4.address }}:8080"
 lufi_contact: "admin@lufi.example.com"
 
 # Optional
