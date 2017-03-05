@@ -104,7 +104,6 @@ lufi_broadcast_message: "Welcome to Lufi. Upload those files!"
 
 * files are written encrypted in {{ lufi_working_dir }}/files
 * activity log is inside lufi.db(sqlite3) and log/production.log
-* with nginx reverseproxy in https mode, there is an issue of using clear webSocket and not secure one. Under review.
 
 ## License
 

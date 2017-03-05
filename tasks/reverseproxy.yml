@@ -1,5 +1,8 @@
 ---
 
+- set_fact:
+    lufi_proxy: yes
+
 - name: install lufi nginx reverseproxy configuration
   template:
     src: lufi-nginx.conf.j2
