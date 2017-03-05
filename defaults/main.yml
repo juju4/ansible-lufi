@@ -43,4 +43,6 @@ lufi_clients: 1
 #lufi_reverseproxy: 'apache'
 #lufi_reverseproxy: 'nginx'
 #lufi_servername: lufi.example.com
+#lufi_serverlisten: 80
+#lufi_serverlisten: 443
 #lufi_origin: 127.0.0.1:8080

@@ -1,7 +1,14 @@
 ## https://framagit.org/luc/lufi/wikis/installation as virtualhost
 
     # HTTPS only header, improves security
-    # Header always set Strict-Transport-Security "max-age=63072000; preload"
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "sameorigin"
+    #Header set X-Frame-Options "deny"
+    #Header set Strict-Transport-Security "max-age=16070400; includeSubDomains"
+    Header always set Strict-Transport-Security "max-age=63072000; includeSubdomains; preload"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self'; style-src 'self'; object-src 'self';"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
 
     # Lufi
     ProxyPreserveHost On

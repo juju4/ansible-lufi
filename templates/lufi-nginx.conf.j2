@@ -1,7 +1,7 @@
 ## from https://framagit.org/luc/lufi/wikis/installation
 
 server {
-    listen 80;
+    listen {{ lufi_serverlisten }};
 
     # Adapt this to your domain!
     server_name {{ lufi_servername }};
@@ -17,6 +17,17 @@ server {
         }
         # HTTPS only header, improves security
         #add_header Strict-Transport-Security "max-age=15768000";
+        add_header X-Content-Type-Options nosniff;
+        add_header X-Frame-Options SAMEORIGIN;
+        #add_header X-Frame-Options DENY;
+        add_header Strict-Transport-Security "max-age=63072000; includeSubdomains; preload";
+        add_header X-XSS-Protection "1; mode=block";
+        #add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self' 'ws://{{ lufi_servername }}/upload'; img-src 'self'; style-src 'self';";
+        #add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self' ws://; img-src 'self'; style-src 'self';";
+        ## FIXME! over http, CSP request for amazonaws, lancheck??? jquery? not impacting to refuse them
+        #add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://s3.amazonaws.com/js-static/ http://lancheck.net/metric/ http://lancheck.net/optout/; connect-src 'self' *; img-src 'self' http://lancheck.net/metric/; style-src 'self' 'unsafe-inline';";
+        add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self' *; img-src 'self'; style-src 'self' 'unsafe-inline';";
+        add_header Referrer-Policy strict-origin-when-cross-origin;
 
         # Adapt this to your configuration (port, subdirectory (see below))
         proxy_pass  http://{{ lufi_origin }};

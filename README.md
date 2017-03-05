@@ -11,7 +11,7 @@ It will figure out which service manager is being used automatically too.
 ## Requirements
 
 Using this role doesn't install Nginx or Apache as a reverse proxy, you need to do that yourself!
-An example configuration for Nginx can be found [here](https://framagit.org/luc/lufi/wikis/installation#putting-lufi-behind-nginx).
+An example configuration for Nginx can be found [here](https://framagit.org/luc/lufi/wikis/installation#putting-lufi-behind-nginx). It is included as an option here.
 
 ## Role Variables
 
@@ -95,9 +95,8 @@ None.
 # vars/main.yml
 ---
 lufi_working_dir: "/var/www/lufi.example.com"
-lufi_listen: "http://127.0.0.1:8080"
+lufi_listen: [ "http://127.0.0.1:8080" ]
 lufi_contact: "admin@lufi.example.com"
-lufi_secrets: ["xud7ooJu","aiNg7duG","ih7kom8Z","Ocaish3I","Ooja7chi","Eet4weil","Ethee4Go","xahJ0ohy"]
 lufi_broadcast_message: "Welcome to Lufi. Upload those files!"
 ```
 
@@ -105,6 +104,7 @@ lufi_broadcast_message: "Welcome to Lufi. Upload those files!"
 
 * files are written encrypted in {{ lufi_working_dir }}/files
 * activity log is inside lufi.db(sqlite3) and log/production.log
+* with nginx reverseproxy in https mode, there is an issue of using clear webSocket and not secure one. Under review.
 
 ## License
 
