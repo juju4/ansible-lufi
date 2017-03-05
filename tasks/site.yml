@@ -17,7 +17,7 @@
 
 - set_fact:
     lufi_proxy: yes
-  when: lufi_reverseproxy == 'nginx' or lufi_reverseproxy == 'apache'
+  when: lufi_reverseproxy is defined and (lufi_reverseproxy == 'nginx' or lufi_reverseproxy == 'apache')
 
 ## FIXME! any option to validate config?
 - name: Lufi | Copy config
