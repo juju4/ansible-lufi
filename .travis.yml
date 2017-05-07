@@ -14,6 +14,9 @@ env:
 before_install:
   - sudo apt-get update -qq
   - ln -s ansible-lufi ../noplanman.lufi
+## serverspec test
+  - sudo apt-get install -qq ruby2.0 rake
+  - sudo gem2.0 install serverspec
 
 install:
   # Install ansible.
@@ -33,8 +36,8 @@ script:
 
   # Run the role/playbook again, checking to make sure it's idempotent.
   - >
-    ansible-playbook -i inventory --connection=local --sudo test/integration/default/default.yml
-    | grep -q 'changed=0.*failed=0'
+    ansible-playbook -i inventory --connection=local --become test/integration/default/default.yml
+    | tee /tmp/idempotency.log | grep -q 'changed=0.*failed=0'
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && cat /tmp/idempotency.log && exit 0)
 
