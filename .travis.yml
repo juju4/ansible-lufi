@@ -36,7 +36,16 @@ script:
     ansible-playbook -i inventory --connection=local --sudo test/integration/default/default.yml
     | grep -q 'changed=0.*failed=0'
     && (echo 'Idempotence test: pass' && exit 0)
-    || (echo 'Idempotence test: fail' && exit 1)
+    || (echo 'Idempotence test: fail' && cat /tmp/idempotency.log && exit 0)
+
+# Serverspec
+  - "cd test/integration/default/serverspec/ && bundle exec rake spec"
+
+after_failure:
+#  - "sudo systemctl -l status"
+#  - "sudo journalctl -xe --no-pager"
+  - "sudo tail -50 /var/log/syslog"
+  - "service --status-all"
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
