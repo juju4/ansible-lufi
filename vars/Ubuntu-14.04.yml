@@ -6,6 +6,7 @@ lufi_pkg_deps:
   - libssl-dev
   - cpanminus
   - cron
+  - acl
 
 www_user: www-data
 www_root: /var/www

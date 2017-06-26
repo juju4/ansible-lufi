@@ -8,6 +8,7 @@ lufi_pkg_deps:
   - openssl-devel
   - perl-App-cpanminus
   - crontabs
+  - acl
 
 www_user: apache
 #www_user: nginx
