@@ -11,12 +11,11 @@ provisioner:
   name: ansible_playbook
   roles_path: ../
   hosts: test-kitchen
-  ansible_verbose: true
-#  ansible_verbose: false
+#  ansible_verbose: true
+  ansible_verbose: false
   ansible_verbosity: 4
+  ansible_version: <%= ENV['ANSIBLE_VERSION'] || '2.4.0.0' %>
   ansible_extra_flags: <%= ENV['ANSIBLE_EXTRA_FLAGS'] %>
-#  ansible_yum_repo: http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-8.noarch.rpm
-#  ansible_yum_repo: https://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
 #  require_chef_omnibus: false
   require_ansible_omnibus: true
 #  require_chef_for_busser: false
@@ -34,10 +33,15 @@ platforms:
 #    provisioner:
 #      ansible_version: 2.1.2.0
 ## tool chain kitchen and image need customization... nok currently
-#  - name: alpine-3.4
+#  - name: alpine-3.6
 
 suites:
   - name: default
     run_list:
     attributes:
-
+  - name: default-apache
+    run_list:
+    attributes:
+  - name: default-nginx
+    run_list:
+    attributes:

@@ -9,11 +9,10 @@ provisioner:
   name: ansible_playbook
   roles_path: ../
   hosts: test-kitchen
-  ansible_verbose: true
-#  ansible_verbose: false
+# ansible_verbose: true
+  ansible_verbose: false
   ansible_verbosity: 4
   ansible_extra_flags: <%= ENV['ANSIBLE_EXTRA_FLAGS'] %>
-#  ansible_yum_repo: http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-8.noarch.rpm
   require_chef_omnibus: false
   require_ansible_omnibus: true
 #  require_chef_for_busser: false
@@ -30,10 +29,15 @@ platforms:
 #  - name: centos-6
 ## FIXME! 'Installing Chef Omnibus to install busser to run tests' not supported = can disable
 ##	' sl = self._semlock = _multiprocessing.SemLock(kind, value, maxvalue)\nOSError: [Errno 2] No such file or directory'
-#  - name: alpine-3.4
+#  - name: alpine-3.6
 
 suites:
   - name: default
     run_list:
     attributes:
-
+  - name: default-apache
+    run_list:
+    attributes:
+  - name: default-nginx
+    run_list:
+    attributes:

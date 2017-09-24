@@ -1,0 +1,16 @@
+---
+
+- hosts: all
+  vars:
+## 100MB
+    - lufi_max_total_size: 107374182400
+    - lufi_delete_no_longer_viewed_files: 7
+    - keep_ip_during: 365
+    - lufi_reverseproxy: 'nginx'
+    - lufi_reverseproxy_https: true
+    - lufi_servername: lufi.example.com
+    - lufi_serverlisten: 443
+    - lufi_origin: 127.0.0.1:8080
+  roles:
+    - geerlingguy.nginx
+    - noplanman.lufi
