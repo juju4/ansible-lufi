@@ -9,6 +9,7 @@ lufi_pkg_deps:
   - perl-App-cpanminus
   - crontabs
   - acl
+  - postgresql-devel
 
 www_user: apache
 #www_user: nginx
