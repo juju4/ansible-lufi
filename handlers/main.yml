@@ -7,7 +7,7 @@
 
 - name: restart lufi
   service: name=lufi state=restarted enabled=yes
-  when: ansible_service_mgr == 'sysvinit' or ansible_service_mgr == 'upstart' or ansible_service_mgr == 'systemd'
+#  when: ansible_service_mgr == 'sysvinit' or ansible_service_mgr == 'upstart' or ansible_service_mgr == 'systemd'
 
 - name: restart nginx
   service: name=nginx state=restarted

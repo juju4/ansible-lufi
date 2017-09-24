@@ -22,9 +22,17 @@
   become: yes
   become_user: "{{ lufi_user }}"
 
-- include: service-{{ ansible_service_mgr }}.yml
-  tags: lufi:service
-  when: ansible_service_mgr == 'sysvinit' or ansible_service_mgr == 'upstart' or ansible_service_mgr == 'systemd'
+## FIXME! kitchen/docker: ansible_service_mgr = sshd???
+- debug: var=ansible_service_mgr
+#- include: service-{{ ansible_service_mgr }}.yml
+#  tags: lufi:service
+#  when: ansible_service_mgr == 'sysvinit' or ansible_service_mgr == 'upstart' or ansible_service_mgr == 'systemd'
+- include: service-systemd.yml
+  when: ansible_distribution_release == 'xenial' or (ansible_os_family == "RedHat" and ansible_distribution_version == '7')
+- include: service-upstart.yml
+  when: ansible_distribution_release == 'trusty'
+- include: service-sysvinit.yml
+  when: ansible_distribution_release == 'precise' or (ansible_os_family == "RedHat" and ansible_distribution_version == '6')
 
 - include: cron.yml
   tags: lufi:cron
