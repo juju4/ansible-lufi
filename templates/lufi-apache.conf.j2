@@ -17,14 +17,17 @@
     RewriteCond %{HTTP:Connection} upgrade [NC]
     RewriteCond %{HTTP:Upgrade} websocket [NC]
     # Adapt this to your configuration
-    RewriteRule ^/lufi/(.*) ws://{{ lufi_origin }}/lufi/$1 [P,L]
+{% if lufi_reverseproxy_https is defined and lufi_reverseproxy_https %}
     # HTTPS only, use instead of the above line (note the "wss" instead of "ws")
     #RewriteRule ^/lufi/(.*) wss://127.0.0.1:8081/lufi/$1 [P,L]
+    # HTTPS only, but won't be used if you use HTTP. You can leave it.
+    RequestHeader set X-Forwarded-Proto https env=HTTPS
+{% else %}
+    RewriteRule ^/lufi/(.*) ws://{{ lufi_origin }}/lufi/$1 [P,L]
+{% endif %}
 
     RequestHeader unset X-Forwarded-Proto
     RequestHeader add X-Remote-Port %{R_P}e
-    # HTTPS only, but won't be used if you use HTTP. You can leave it.
-    RequestHeader set X-Forwarded-Proto https env=HTTPS
 
     <Location /lufi>
         # Adapt this to your configuration
