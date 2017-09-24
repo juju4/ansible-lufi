@@ -6,6 +6,7 @@ python: "2.7"
 
 env:
   - ANSIBLE_VERSION=latest
+  - ANSIBLE_VERSION=2.3.2.0
   - ANSIBLE_VERSION=2.2.1.0
   - ANSIBLE_VERSION=2.1.0.0
   - ANSIBLE_VERSION=2.0.2.0
@@ -13,7 +14,7 @@ env:
 
 before_install:
   - sudo apt-get update -qq
-  - ln -s ansible-lufi ../noplanman.lufi
+ - "[ -f get-dependencies.sh ] && sh -x get-dependencies.sh"
 ## serverspec test
   - sudo apt-get install -qq ruby2.0 rake
   - sudo gem2.0 install serverspec
