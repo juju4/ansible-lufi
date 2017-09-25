@@ -1,0 +1,19 @@
+---
+
+lufi_pkg_deps:
+  - gcc
+  - make
+  - perl
+  - git
+  - openssl-devel
+  - perl-App-cpanminus
+  - crontabs
+  - acl
+  - postgresql-devel
+
+www_user: apache
+#www_user: nginx
+www_root: '/var/www'
+nginx_sitedir: /etc/nginx/conf.d
+apache_confdir: /etc/httpd/conf.d
+apache_sitedir: /etc/httpd/conf.d
