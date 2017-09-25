@@ -14,3 +14,6 @@ lufi_pkg_deps:
 www_user: apache
 #www_user: nginx
 www_root: '/var/www'
+nginx_sitedir: /etc/nginx/conf.d
+apache_confdir: /etc/httpd/conf.d
+apache_sitedir: /etc/httpd/conf.d
