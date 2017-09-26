@@ -13,4 +13,5 @@
 - name: Lufi | RedHat7 | reload systemd
   systemd:
     daemon_reload: yes
+    name: lufi
   when: (ansible_os_family == 'RedHat' and ansible_distribution_version.split(".")[0] == '7') and systemd.changed
