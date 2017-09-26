@@ -3,11 +3,12 @@
 sudo: required
 
 env:
-  - distribution: centos
-    version: 6
-    init: /sbin/init
-    run_opts: ""
-    suite: default
+## no perl-App-cpanminus rpm
+#  - distribution: centos
+#    version: 6
+#    init: /sbin/init
+#    run_opts: ""
+#    suite: default
   - distribution: centos
     version: 7
     init: /usr/lib/systemd/systemd
@@ -29,11 +30,12 @@ env:
 #    init: /sbin/init
 #    run_opts: ""
 #    suite: default
-  - distribution: alpine
-    version: 3.6
-    init: /sbin/init
-    run_opts: ""
-    suite: default
+## postgresql-dev package issue https://travis-ci.org/juju4/ansible-lufi/jobs/279755720
+#  - distribution: alpine
+#    version: 3.6
+#    init: /sbin/init
+#    run_opts: ""
+#    suite: default
   - distribution: centos
     version: 7
     init: /usr/lib/systemd/systemd
