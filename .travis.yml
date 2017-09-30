@@ -104,6 +104,8 @@ after_failure:
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm systemctl -l --no-pager status apache2.service'
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm systemctl -l --no-pager status httpd.service'
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm journalctl -xe --no-pager'
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ss -l4tp'
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm cat /etc/httpd/conf.d/*'
 
 after_script:
   # Clean up
