@@ -26,7 +26,9 @@ server {
         #add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self' ws://; img-src 'self'; style-src 'self';";
         ## FIXME! over http, CSP request for amazonaws, lancheck??? jquery? not impacting to refuse them
         #add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://s3.amazonaws.com/js-static/ http://lancheck.net/metric/ http://lancheck.net/optout/; connect-src 'self' *; img-src 'self' http://lancheck.net/metric/; style-src 'self' 'unsafe-inline';";
-        add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self' *; img-src 'self'; style-src 'self' 'unsafe-inline';";
+{% if lufi_csp is defined and lufi_csp != '' %}
+        add_header Content-Security-Policy "{{ lufi_csp }}";
+{% endif %}
         add_header Referrer-Policy strict-origin-when-cross-origin;
 
         # Adapt this to your configuration (port, subdirectory (see below))

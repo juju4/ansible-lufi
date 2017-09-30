@@ -54,3 +54,12 @@ lufi_clients: 1
 #lufi_serverlisten: 80
 #lufi_serverlisten: 443
 #lufi_origin: 127.0.0.1:8080
+# if virtualhost
+#lufi_serverpath: /
+# if subpath
+#lufi_serverpath: /lufi
+
+# if empty, not applied
+# https://outlandish.com/blog/configure-content-security-policy-with-websockets-and-express/
+lufi_csp: ""
+#lufi_csp: "default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self' ws://localhost ws://mydomain.com; img-src 'self'; style-src 'self' 'unsafe-inline'; object-src 'self';"
