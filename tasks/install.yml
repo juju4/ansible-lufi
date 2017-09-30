@@ -9,6 +9,12 @@
   package: name="{{ item }}" state=present
   with_items: "{{ lufi_pkg_deps }}"
 
+- name: RedHat | Ensure selinux dependency is present
+  package:
+    name: libselinux-python
+    state: yes
+  when: ansible_os_family == "RedHat"
+
 - name: RedHat | Allow proxy to network connect in selinux
   seboolean:
     name: httpd_can_network_connect
