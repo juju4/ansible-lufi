@@ -9,7 +9,7 @@
     - lufi_reverseproxy: 'apache'
     - lufi_reverseproxy_https: true
     - lufi_servername: lufi.example.com
-    - lufi_serverlisten: 443
+    - lufi_serverlisten: 1443
     - lufi_origin: 127.0.0.1:8080
   roles:
     - geerlingguy.apache
