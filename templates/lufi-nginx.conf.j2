@@ -29,7 +29,8 @@ server {
 {% if lufi_csp is defined and lufi_csp != '' %}
         add_header Content-Security-Policy "{{ lufi_csp }}";
 {% endif %}
-        add_header Referrer-Policy strict-origin-when-cross-origin;
+        add_header Referrer-Policy origin;
+        #add_header Referrer-Policy strict-origin-when-cross-origin;
 
         # Adapt this to your configuration (port, subdirectory (see below))
         proxy_pass  http://{{ lufi_origin }};

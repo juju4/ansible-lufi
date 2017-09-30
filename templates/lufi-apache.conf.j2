@@ -1,4 +1,8 @@
 ## https://framagit.org/luc/lufi/wikis/installation as virtualhost
+{% if lufi_virtualhost %}
+Listen {{ lufi_serverlisten }}
+<Virtualhost {{ lufi_servername }}:{{ lufi_serverlisten }}>
+{% endif %}
 
     # HTTPS only header, improves security
     Header set X-Content-Type-Options "nosniff"
@@ -22,20 +26,23 @@
     # Adapt this to your configuration
 {% if lufi_reverseproxy_https is defined and lufi_reverseproxy_https %}
     # HTTPS only, use instead of the above line (note the "wss" instead of "ws")
-    #RewriteRule ^/lufi/(.*) wss://127.0.0.1:8081/lufi/$1 [P,L]
+    RewriteRule ^/lufi/(.*) wss://{{ lufi_origin }}{{ lufi_prefix }}/$1 [P,L]
     # HTTPS only, but won't be used if you use HTTP. You can leave it.
     RequestHeader set X-Forwarded-Proto https env=HTTPS
 {% else %}
-    RewriteRule ^/lufi/(.*) ws://{{ lufi_origin }}/lufi/$1 [P,L]
+    RewriteRule ^/lufi/(.*) ws://{{ lufi_origin }}{{ lufi_prefix }}/$1 [P,L]
 {% endif %}
 
     RequestHeader unset X-Forwarded-Proto
     RequestHeader add X-Remote-Port %{R_P}e
 
-    <Location {{ lufi_serverpath }}>
+    <Location {{ lufi_prefix }}>
         # Adapt this to your configuration
-        ProxyPass http://{{ lufi_origin }}{{ lufi_serverpath }}
-        ProxyPassReverse /lufi
+        ProxyPass http://{{ lufi_origin }}{{ lufi_prefix }}
+        ProxyPassReverse {{ lufi_prefix }}
         LimitRequestBody 104857600
     </Location>
 
+{% if lufi_virtualhost %}
+</Virtualhost>
+{% endif %}

@@ -35,7 +35,6 @@ lufi_clients: 1
 #lufi_broadcast_message: ""
 #lufi_default_delay: 0
 #lufi_max_delay: 0
-#lufi_prefix: "/"
 #lufi_allowed_domains: []
 #lufi_fixed_domain: ""
 #lufi_mail_sender: "no-reply@lufi.io"
@@ -46,20 +45,21 @@ lufi_clients: 1
 #lufi_policy_when_full: "warn"
 #lufi_delete_no_longer_viewed_files: 90
 
-## This will not install webservers, just push lufi virtualhost configuration
+## This will not install webservers, just push lufi virtualhost or subdir configuration
 #lufi_reverseproxy: 'apache'
 #lufi_reverseproxy: 'nginx'
-#lufi_reverseproxy_https: true
+lufi_reverseproxy_https: true
 #lufi_servername: lufi.example.com
+lufi_servername: localhost
+lufi_origin: 127.0.0.1:8080
+lufi_virtualhost: true
+lufi_prefix: "/"
 #lufi_serverlisten: 80
-#lufi_serverlisten: 443
-#lufi_origin: 127.0.0.1:8080
-# if virtualhost
-#lufi_serverpath: /
-# if subpath
-#lufi_serverpath: /lufi
+lufi_serverlisten: 1443
+#lufi_virtualhost: false
+#lufi_prefix: "/lufi"
 
 # if empty, not applied
 # https://outlandish.com/blog/configure-content-security-policy-with-websockets-and-express/
-lufi_csp: ""
-#lufi_csp: "default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self' ws://localhost ws://mydomain.com; img-src 'self'; style-src 'self' 'unsafe-inline'; object-src 'self';"
+#lufi_csp: ""
+lufi_csp: "default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self' ws://localhost ws://{{ lufi_servername }}:{{ lufi_serverlisten }} wss://{{ lufi_servername }}:{{ lufi_serverlisten }}; img-src 'self'; style-src 'self' 'unsafe-inline'; object-src 'self';"
