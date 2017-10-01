@@ -5,7 +5,7 @@
 
 - name: ensure lufi user exists
   user:
-    name: "{{ lufi_user }}" 
+    name: "{{ lufi_user }}"
     groups: "{{ lufi_group }}"
     append: yes
     home: "{{ lufi_home }}"
