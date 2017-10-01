@@ -11,7 +11,24 @@
     - lufi_servername: lufi.example.com
     - lufi_serverlisten: 1443
     - lufi_origin: 127.0.0.1:8080
+    - lufi_reverseproxy_https_conf: |
+        SSLEngine on
+        Include /etc/httpd/harden-apache2-https.conf
+        SSLCertificateFile /etc/ssl/{{ ansible_fqdn }}.crt
+        SSLCertificateKey /etc/ssl/private/{{ ansible_fqdn }}.key
+        CustomLog "logs/lufi_access_log" combined
+        ErrorLog "logs/lufi_error_log"
+  pre_tasks:
+    - set_fact:
+        lufi_reverseproxy_https_conf: |
+            SSLEngine on
+            Include /etc/httpd/harden-apache2-https.conf
+            SSLCertificateFile /etc/pki/tls/certs/{{ ansible_fqdn }}.crt
+            SSLCertificateKey /etc/pki/tls/private/{{ ansible_fqdn }}.key
+            CustomLog "logs/lufi_access_log" combined
+            ErrorLog "logs/lufi_error_log"
+      when: ansible_os_family == "RedHat"
   roles:
     - geerlingguy.apache
+    - juju4.harden-apache
     - noplanman.lufi
-

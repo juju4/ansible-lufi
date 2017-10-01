@@ -13,4 +13,5 @@
     - lufi_origin: 127.0.0.1:8080
   roles:
     - geerlingguy.nginx
+    - juju4.harden-nginx
     - noplanman.lufi
