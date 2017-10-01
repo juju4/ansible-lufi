@@ -49,6 +49,13 @@ lufi_clients: 1
 #lufi_reverseproxy: 'apache'
 #lufi_reverseproxy: 'nginx'
 lufi_reverseproxy_https: true
+lufi_reverseproxy_https_conf: |
+    SSLEngine on
+    #Include /etc/httpd/harden-apache2-https.conf
+    SSLCertificateFile /path/to/localhost.crt
+    SSLCertificateKey /path/to/localhost.key
+    CustomLog "logs/lufi_access_log" combined
+    ErrorLog "logs/lufi_error_log"
 #lufi_servername: lufi.example.com
 lufi_servername: localhost
 lufi_origin: 127.0.0.1:8080
