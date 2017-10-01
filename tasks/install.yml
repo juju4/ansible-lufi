@@ -17,12 +17,23 @@
       with_items:
         - libselinux-python
         - libsemanage-python
+        - policycoreutils-python
 
     - name: RedHat | Allow proxy to network connect in selinux
       seboolean:
         name: httpd_can_network_connect
         state: yes
         persistent: yes
+
+# https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Managing_Confined_Services/sect-Managing_Confined_Services-Configuration_examples-Changing_port_numbers.html
+# https://wiki.centos.org/HowTos/SELinux#head-ad837f60830442ae77a81aedd10c20305a811388
+    - name: RedHat | Allow httpd to listen to unusual ports
+      seport:
+        ports: "{{ lufi_serverlisten }}"
+        proto: tcp
+        setype: http_port_t
+        state: present
+      when: lufi_serverlisten != 80 and lufi_serverlisten != 443
   when: ansible_os_family == "RedHat" and ansible_selinux
 
 #- name: Lufi | Install cpanm
