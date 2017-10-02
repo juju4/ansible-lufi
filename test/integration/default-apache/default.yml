@@ -29,6 +29,7 @@
       lineinfile:
         dest: /etc/hosts
         line: '127.0.0.1 lufi.example.com'
+      ignore_errors: true
     - set_fact:
         lufi_reverseproxy_https_conf: |
             SSLEngine on
