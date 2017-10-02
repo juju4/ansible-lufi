@@ -19,9 +19,12 @@
         CustomLog "/var/log/apache2/lufi_access_log" combined
         ErrorLog "/var/log/apache2/lufi_error_log"
   pre_tasks:
+# Can't set hostname in docker...
+# 'Could not set property: Failed to set static hostname: Device or resource busy'
     - name: set hostname before certificate creation
       hostname:
         name: "{{ lufi_servername }}"
+      ignore_errors: true
     - name: add servername to /etc/hosts
       lineinfile:
         dest: /etc/hosts
