@@ -40,7 +40,7 @@
 
 - name: Debian | enable lufi apache reverseproxy configuration
   file:
-    src: "{{ nginx_sitedir }}/lufi.conf"
+    src: "{{ apache_sitedir }}/lufi.conf"
     dest: "/etc/apache2/sites-enabled/lufi.conf"
     state: 'link'
   when: lufi_reverseproxy is defined and lufi_reverseproxy == 'apache' and ansible_os_family == 'Debian'
