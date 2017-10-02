@@ -13,18 +13,25 @@
     - lufi_origin: 127.0.0.1:8080
     - lufi_reverseproxy_https_conf: |
         SSLEngine on
-        Include /etc/httpd/harden-apache2-https.conf
+        Include /etc/apache2/harden-apache2-https.conf
         SSLCertificateFile /etc/ssl/{{ ansible_fqdn }}.crt
-        SSLCertificateKey /etc/ssl/private/{{ ansible_fqdn }}.key
-        CustomLog "logs/lufi_access_log" combined
-        ErrorLog "logs/lufi_error_log"
+        SSLCertificateKeyFile /etc/ssl/private/{{ ansible_fqdn }}.key
+        CustomLog "/var/log/apache2/lufi_access_log" combined
+        ErrorLog "/var/log/apache2/lufi_error_log"
   pre_tasks:
+    - name: set hostname before certificate creation
+      hostname:
+        name: "{{ lufi_servername }}"
+    - name: add servername to /etc/hosts
+      lineinfile:
+        dest: /etc/hosts
+        line: '127.0.0.1 lufi.example.com'
     - set_fact:
         lufi_reverseproxy_https_conf: |
             SSLEngine on
             Include /etc/httpd/harden-apache2-https.conf
             SSLCertificateFile /etc/pki/tls/certs/{{ ansible_fqdn }}.crt
-            SSLCertificateKey /etc/pki/tls/private/{{ ansible_fqdn }}.key
+            SSLCertificateKeyFile /etc/pki/tls/private/{{ ansible_fqdn }}.key
             CustomLog "logs/lufi_access_log" combined
             ErrorLog "logs/lufi_error_log"
       when: ansible_os_family == "RedHat"

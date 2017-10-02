@@ -53,7 +53,7 @@ lufi_reverseproxy_https_conf: |
     SSLEngine on
     #Include /etc/httpd/harden-apache2-https.conf
     SSLCertificateFile /path/to/localhost.crt
-    SSLCertificateKey /path/to/localhost.key
+    SSLCertificateKeyFile /path/to/localhost.key
     CustomLog "logs/lufi_access_log" combined
     ErrorLog "logs/lufi_error_log"
 #lufi_servername: lufi.example.com
