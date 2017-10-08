@@ -9,7 +9,6 @@ Listen {{ lufi_serverlisten }} {% if lufi_reverseproxy_https %}https{% endif %}
 {{ lufi_reverseproxy_https_conf }}
 {% endif %}
 
-    # HTTPS only header, improves security
     Header set X-Content-Type-Options "nosniff"
     Header set X-Frame-Options "sameorigin"
     #Header set X-Frame-Options "deny"
