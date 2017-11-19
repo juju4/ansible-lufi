@@ -9,6 +9,16 @@
   package: name="{{ item }}" state=present
   with_items: "{{ lufi_pkg_deps }}"
 
+# https://github.com/ansible/ansible/issues/16612
+- block:
+    - debug: var=ansible_selinux
+    - name: RedHat | Ensure selinux dependencies are present
+      package:
+        name: libselinux-python
+        state: present
+    - action: setup
+    - debug: var=ansible_selinux
+  when: ansible_os_family == "RedHat"
 - block:
     - name: RedHat | Ensure selinux dependencies are present
       package:
