@@ -44,7 +44,7 @@
         setype: http_port_t
         state: present
       when: lufi_serverlisten != 80 and lufi_serverlisten != 443
-  when: ansible_os_family == "RedHat" and ansible_selinux.status is defined ansible_selinux.status != 'disabled'
+  when: ansible_os_family == "RedHat" and ansible_selinux.status is defined and ansible_selinux.status != 'disabled'
 
 #- name: Lufi | Install cpanm
 #  get_url:
