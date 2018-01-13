@@ -2,6 +2,10 @@
 ## from https://github.com/geerlingguy/ansible-role-apache/blob/master/.travis.yml
 sudo: required
 
+addons:
+  hosts:
+    - lufi.example.com
+
 env:
 ## no perl-App-cpanminus rpm
 #  - distribution: centos
