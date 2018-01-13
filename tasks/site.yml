@@ -10,7 +10,8 @@
     force: yes
   register: lufi_git_updated
   changed_when: lufi_git_updated.after != lufi_git_updated.before
-  notify: restart lufi
+  notify:
+    - restart lufi
 - debug: var=lufi_git_updated
 #- fail: msg=stop
 
@@ -27,7 +28,8 @@
     dest: "{{ lufi_working_dir }}/lufi.conf"
     mode: 0644
 #    validate: 'cmd %s'
-  notify: restart lufi
+  notify:
+    - restart lufi
 
 ## FIXME! command fails on trusty, not creating lufi.db
 - name: Lufi | Install lufi
@@ -38,7 +40,8 @@
   environment:
     PATH: '/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin'
   register: lufi_app_installed
-  notify: restart lufi
+  notify:
+    - restart lufi
 
 - name: Lufi | Update lufi
   command: carton update
@@ -49,7 +52,8 @@
   when: lufi_app_installed.changed or lufi_keep_updated
   register: lufi_app_updated
   changed_when: "'Successfully installed' in lufi_app_updated.stdout"
-  notify: restart lufi
+  notify:
+    - restart lufi
 ## FIXME! fail on centos7 'Could not find module Apache::Htpasswd.'
   ignore_errors: true
 

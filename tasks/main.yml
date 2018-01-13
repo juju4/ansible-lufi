@@ -27,7 +27,6 @@
 
 ## FIXME! kitchen/docker: ansible_service_mgr = sshd???
 - debug: var=ansible_service_mgr
-- debug: var=ansible_service_mgr
 #- include: service-{{ ansible_service_mgr }}.yml
 #  tags: lufi:service
 #  when: ansible_service_mgr == 'sysvinit' or ansible_service_mgr == 'upstart' or ansible_service_mgr == 'systemd'
@@ -42,3 +41,11 @@
   tags: lufi:cron
 - include: reverseproxy.yml
 
+# for docker, start manually service
+- name: docker | start lufi
+  command: "/usr/local/bin/carton exec hypnotoad script/lufi"
+  args:
+    chdir: "{{ lufi_working_dir }}"
+  become: yes
+  become_user: "{{ lufi_user }}"
+  when: not (ansible_service_mgr == 'sysvinit' or ansible_service_mgr == 'upstart' or ansible_service_mgr == 'systemd')
