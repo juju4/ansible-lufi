@@ -18,6 +18,8 @@ env:
 #    version: 12.04
 #  - distribution: alpine
 #    version: 3.4
+  - distribution: debian
+    version: stretch
 
 before_install:
   - env
