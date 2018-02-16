@@ -30,9 +30,7 @@ platforms:
 ## FIXME! 'Installing Chef Omnibus to install busser to run tests' not supported = can disable
 ##	' sl = self._semlock = _multiprocessing.SemLock(kind, value, maxvalue)\nOSError: [Errno 2] No such file or directory'
 #  - name: alpine-3.6
-  - name: debian-9
-    driver_config:
-      image: debian-stretch
+  - name: debian-stretch
 
 suites:
   - name: default
