@@ -1,0 +1,17 @@
+---
+
+lufi_pkg_deps:
+  - build-essential
+  - git
+  - libssl-dev
+  - cpanminus
+  - cron
+  - acl
+  - libpq-dev
+  - libmodule-install-perl
+
+www_user: www-data
+www_root: /var/www
+nginx_sitedir: /etc/nginx/sites-available
+apache_confdir: /etc/apache2/conf-available
+apache_sitedir: /etc/apache2/sites-available
