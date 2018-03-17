@@ -8,6 +8,8 @@ lufi_pkg_deps:
   - cron
   - acl
   - libpq-dev
+# serverspec testing
+  - iproute2
 
 www_user: www-data
 www_root: /var/www
