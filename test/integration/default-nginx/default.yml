@@ -11,6 +11,13 @@
     - lufi_servername: lufi.example.com
     - lufi_serverlisten: 1443
     - lufi_origin: 127.0.0.1:8080
+    - lufi_reverseproxy_https_conf: |
+            include /etc/nginx/harden-nginx-https;
+            ssl_certificate {{ ssl_dir }}/{{ ansible_fqdn }}.crt;
+            ssl_certificate_key {{ ssl_privatedir }}/{{ ansible_fqdn }}.key;
+            access_log /var/log/nginx/lufi-access.log;
+            error_log /var/log/nginx/lufi-error.log warn;
+    - nginx_client_max_body_size: "5m"
   roles:
     - geerlingguy.nginx
     - juju4.harden-nginx
