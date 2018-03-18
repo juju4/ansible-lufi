@@ -20,7 +20,7 @@ describe package('perl-App-cpanminus'), :if => os[:family] == 'redhat' do
 end
 
 describe service('lufi') do
-  it { should be_enabled }
+#  it { should be_enabled }
   it { should be_running }
 end
 describe process("#{lufi_working_dir}/script/lufi") do
