@@ -40,14 +40,6 @@ env:
     suite: default
   - distribution: centos
     version: 7
-    ANSIBLE_VERSION: 2.2.1.0
-    suite: default
-  - distribution: ubuntu
-    version: 16.04
-    ANSIBLE_VERSION: 2.2.1.0
-    suite: default
-  - distribution: centos
-    version: 7
     ANSIBLE_VERSION: 2.4.0.0
     suite: default-apache
   - distribution: ubuntu
