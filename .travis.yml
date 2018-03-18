@@ -50,6 +50,11 @@ env:
     version: 16.04
     ANSIBLE_VERSION: 2.4.3.0
     suite: default-nginx
+# upcoming ansible
+  - distribution: ubuntu
+    version: 18.04
+    ANSIBLE_VERSION: 2.5.0rc3
+    suite: default
 
 before_install:
   - "[ -f get-dependencies.sh ] && sh -x get-dependencies.sh"
