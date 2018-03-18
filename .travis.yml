@@ -40,15 +40,15 @@ env:
     suite: default-apache
   - distribution: ubuntu
     version: 16.04
-    ANSIBLE_VERSION: 2.4.0.0
+    ANSIBLE_VERSION: 2.4.3.0
     suite: default-apache
   - distribution: centos
     version: 7
-    ANSIBLE_VERSION: 2.4.0.0
+    ANSIBLE_VERSION: 2.4.3.0
     suite: default-nginx
   - distribution: ubuntu
     version: 16.04
-    ANSIBLE_VERSION: 2.4.0.0
+    ANSIBLE_VERSION: 2.4.3.0
     suite: default-nginx
 
 before_install:
