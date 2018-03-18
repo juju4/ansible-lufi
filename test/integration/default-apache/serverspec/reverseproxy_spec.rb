@@ -33,7 +33,7 @@ describe port("#{lufi_reverseport}") do
   it { should be_listening }
 end
 
-describe command("curl --resolve 'lufi.example.com:#{lufi_reverseport}:127.0.0.1' -kvL https://lufi.example.com:#{lufi_reverseport}") do
+describe command("curl -kvL https://lufi.example.com:#{lufi_reverseport}") do
   its(:stdout) { should match /<title>Let's Upload that FIle<\/title>/ }
   its(:stdout) { should match /Lufi/ }
   its(:stdout) { should match /Upload files/ }
@@ -42,7 +42,7 @@ describe command("curl --resolve 'lufi.example.com:#{lufi_reverseport}:127.0.0.1
   its(:exit_status) { should eq 0 }
 end
 ## centos7: fail above 'NSS error -5938 (PR_END_OF_FILE_ERROR)', success below
-describe command("curl --tlsv1.2 --resolve 'lufi.example.com:#{lufi_reverseport}:127.0.0.1' -kvL https://lufi.example.com:#{lufi_reverseport}") do
+describe command("curl --tlsv1.2 -kvL https://lufi.example.com:#{lufi_reverseport}") do
   its(:stdout) { should match /<title>Let's Upload that FIle<\/title>/ }
   its(:stdout) { should match /Lufi/ }
   its(:stdout) { should match /Upload files/ }

@@ -30,6 +30,8 @@ suites:
   - name: default-apache
     run_list:
     attributes:
+    driver_config:
+      vm_hostname: lufi.example.com
   - name: default-nginx
     run_list:
     attributes:
