@@ -24,7 +24,7 @@ describe service('lufi'), :if => os[:family] == 'debian' || os[:family] == 'ubun
   it { should be_running }
 end
 describe service('lufi'), :if => os[:family] == 'redhat' do
-  it { should be_enabled }
+#  it { should be_enabled }
   it { should be_running }
 end
 describe process("#{lufi_working_dir}/script/lufi") do

@@ -10,6 +10,8 @@ lufi_pkg_deps:
   - crontabs
   - acl
   - postgresql-devel
+# serverspec testing
+  - iproute
 
 www_user: apache
 #www_user: nginx
