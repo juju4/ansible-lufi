@@ -44,11 +44,20 @@
   tags: lufi:cron
 - include: reverseproxy.yml
 
+- meta: flush_handlers
+
 # for docker, start manually service
-- name: docker | start lufi
-  command: "/usr/local/bin/carton exec hypnotoad script/lufi"
-  args:
-    chdir: "{{ lufi_working_dir }}"
-  become: yes
-  become_user: "{{ lufi_user }}"
+- block:
+    - name: docker | start lufi
+      command: "/usr/local/bin/carton exec hypnotoad script/lufi"
+      args:
+        chdir: "{{ lufi_working_dir }}"
+      become: yes
+      become_user: "{{ lufi_user }}"
+    - name: docker | start apache reverseproxy
+      command: /etc/init.d/apache2 restart
+      when: lufi_reverseproxy is defined and lufi_reverseproxy == 'apache' and ansible_os_family == 'Debian'
+    - name: docker | start nginx reverseproxy
+      command: /etc/init.d/nginx restart
+      when: lufi_reverseproxy is defined and lufi_reverseproxy == 'nginx' and ansible_os_family == 'Debian'
   when: not (ansible_service_mgr == 'sysvinit' or ansible_service_mgr == 'upstart' or ansible_service_mgr == 'systemd')
