@@ -10,19 +10,15 @@ env:
 #    ANSIBLE_VERSION: latest
   - distribution: centos
     version: 7
-    ANSIBLE_VERSION: 2.4.3.0
+    ANSIBLE_VERSION: 2.5.2.0
     suite: default
   - distribution: ubuntu
     version: 18.04
-    ANSIBLE_VERSION: 2.4.3.0
+    ANSIBLE_VERSION: 2.5.2.0
     suite: default
   - distribution: ubuntu
     version: 16.04
-    ANSIBLE_VERSION: 2.4.3.0
-    suite: default
-  - distribution: ubuntu
-    version: 14.04
-    ANSIBLE_VERSION: 2.4.3.0
+    ANSIBLE_VERSION: 2.5.2.0
     suite: default
 #  - distribution: ubuntu
 #    version: 12.04
@@ -32,44 +28,34 @@ env:
 #    ANSIBLE_VERSION: latest
   - distribution: centos
     version: 7
-    ANSIBLE_VERSION: 2.3.2.0
+    ANSIBLE_VERSION: 2.4.4.0
     suite: default
   - distribution: ubuntu
-    version: 16.04
-    ANSIBLE_VERSION: 2.3.2.0
+    version: 18.04
+    ANSIBLE_VERSION: 2.4.4.0
     suite: default
-  - distribution: centos
-    version: 7
-    ANSIBLE_VERSION: 2.2.1.0
-    suite: default
+#  - distribution: centos
+#    version: 7
+#    ANSIBLE_VERSION: 2.4.0.0
+#    suite: default-apache
   - distribution: ubuntu
-    version: 16.04
-    ANSIBLE_VERSION: 2.2.1.0
-    suite: default
-  - distribution: centos
-    version: 7
-    ANSIBLE_VERSION: 2.4.0.0
+    version: 18.04
+    ANSIBLE_VERSION: 2.5.2.0
     suite: default-apache
+# FIXME! travis/kitchen/docker: FAILED! => {"changed": false, "msg": "Could not find the requested service nginx: host"}
+#  - distribution: centos
+#    version: 7
+#    ANSIBLE_VERSION: 2.4.3.0
+#    suite: default-nginx
   - distribution: ubuntu
-    version: 16.04
-    ANSIBLE_VERSION: 2.4.0.0
-    suite: default-apache
-  - distribution: ubuntu
-    version: 14.04
-    ANSIBLE_VERSION: 2.4.0.0
-    suite: default-apache
-  - distribution: centos
-    version: 7
-    ANSIBLE_VERSION: 2.4.0.0
+    version: 18.04
+    ANSIBLE_VERSION: 2.5.2.0
     suite: default-nginx
-  - distribution: ubuntu
-    version: 16.04
-    ANSIBLE_VERSION: 2.4.0.0
-    suite: default-nginx
-  - distribution: ubuntu
-    version: 14.04
-    ANSIBLE_VERSION: 2.4.0.0
-    suite: default-nginx
+# upcoming ansible
+#  - distribution: ubuntu
+#    version: 18.04
+#    ANSIBLE_VERSION: 2.5.0rc3
+#    suite: default
 
 before_install:
   - "[ -f get-dependencies.sh ] && sh -x get-dependencies.sh"
