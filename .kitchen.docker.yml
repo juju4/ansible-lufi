@@ -14,7 +14,7 @@ provisioner:
   ansible_verbose: true
 #  ansible_verbose: false
   ansible_verbosity: 2
-  ansible_version: <%= ENV['ANSIBLE_VERSION'] || '2.4.0.0' %>
+  ansible_version: <%= ENV['ANSIBLE_VERSION'] || '2.5.3.0' %>
   ansible_extra_flags: <%= ENV['ANSIBLE_EXTRA_FLAGS'] %>
   ansible_cfg_path: test/vagrant/ansible.cfg
 #  require_chef_omnibus: false
