@@ -8,6 +8,7 @@
   shell: "(for i in `seq 10`; do openssl rand -base64 32 | sed 's@[=\\/\\+]@@g;'; done) | tee {{ secretdir }}/.lufi_secrets creates={{ secretdir }}/.lufi_secrets"
   register: secrets
   changed_when: false
+  no_log: true
 - stat: path="{{ secretdir }}/.lufi_secrets"
   register: s
 - name: Recover existing salt
@@ -15,12 +16,15 @@
   changed_when: false
   register: s2
   when: s.stat.exists
+  no_log: true
 - set_fact:
     salt: "{{ secrets.stdout_lines }}"
   when: secrets.changed
+  no_log: true
 - set_fact:
     salt: "{{ s2.stdout_lines }}"
   when: s.stat.exists
+  no_log: true
 
 #- debug: var=salt
 
