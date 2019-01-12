@@ -2,7 +2,7 @@
 
 - name: Lufi | Checkout git repository
   git:
-     repo: https://framagit.org/fiat-tux/hat-softwares/lufi.git
+    repo: https://framagit.org/fiat-tux/hat-softwares/lufi.git
 #    repo: https://github.com/ldidry/lufi.git
 #    repo: https://framagit.org/noplanman/lufi.git
     dest: "{{ lufi_working_dir }}"
