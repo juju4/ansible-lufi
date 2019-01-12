@@ -34,7 +34,7 @@
 
 ## FIXME! command fails on trusty, not creating lufi.db
 - name: Lufi | Install lufi
-  command: carton install
+  command: "carton install {{ lufi_carton_install_args }}"
   args:
     chdir: "{{ lufi_working_dir }}"
     creates: "{{ lufi_db_path }}"
