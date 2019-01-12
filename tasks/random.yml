@@ -1,3 +1,4 @@
+---
 
 - name: Set fact secretdir
   set_fact:

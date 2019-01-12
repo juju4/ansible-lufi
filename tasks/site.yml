@@ -18,7 +18,8 @@
 
 - include: random.yml
 
-- set_fact:
+- name: Set fact lufi_proxy
+  set_fact:
     lufi_proxy: yes
   when: lufi_reverseproxy is defined and (lufi_reverseproxy == 'nginx' or lufi_reverseproxy == 'apache')
 

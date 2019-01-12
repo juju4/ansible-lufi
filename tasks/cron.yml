@@ -1,3 +1,4 @@
+---
 
 - name: lufi cron - cleanbdd once a week
   cron:
