@@ -7,14 +7,4 @@
     owner: root
     group: root
     mode: 0644
-  notify: reload lufi systemd daemons
-  register: systemd
-
-- name: Lufi | RedHat7 | reload systemd
-  systemd:
-    daemon_reload: yes
-    name: lufi
-  when: >
-    (ansible_os_family == 'RedHat' and ansible_distribution_version.split(".")[0] == '7') and
-    systemd.changed and
-    not (ansible_virtualization_type is defined and ansible_virtualization_type == "docker")
+  notify: reload systemd daemon
