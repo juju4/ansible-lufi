@@ -7,7 +7,7 @@
 #    repo: https://framagit.org/noplanman/lufi.git
     dest: "{{ lufi_working_dir }}"
     update: "{{ lufi_keep_updated }}"
-    version: "{{ lufi_version | default('0.02.2') }}"
+    version: "{{ lufi_version | default('0.03') }}"
     force: yes
   register: lufi_git_updated
   changed_when: lufi_git_updated.after != lufi_git_updated.before
