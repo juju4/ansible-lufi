@@ -1,15 +1,23 @@
 
-- set_fact:
+- name: Set fact secretdir
+  set_fact:
     secretdir: "{{ lufi_working_dir }}"
 
 - name: ensure openssl is present
   package: name=openssl state=present
+  register: pkg_result
+  until: pkg_result is success
 - name: Generating salt
-  shell: "(for i in `seq 10`; do openssl rand -base64 32 | sed 's@[=\\/\\+]@@g;'; done) | tee {{ secretdir }}/.lufi_secrets creates={{ secretdir }}/.lufi_secrets"
+  shell: >
+    (for i in `seq 10`; do openssl rand -base64 32 | sed 's@[=\\/\\+]@@g;'; done) |
+        tee {{ secretdir }}/.lufi_secrets
+  args:
+    creates: "{{ secretdir }}/.lufi_secrets"
   register: secrets
   changed_when: false
   no_log: true
-- stat: path="{{ secretdir }}/.lufi_secrets"
+- name: Check if lufi secrets were generated
+  stat: path="{{ secretdir }}/.lufi_secrets"
   register: s
 - name: Recover existing salt
   command: "cat {{ secretdir }}/.lufi_secrets"
@@ -17,14 +25,15 @@
   register: s2
   when: s.stat.exists
   no_log: true
-- set_fact:
+- name: Set fact salt
+  set_fact:
     salt: "{{ secrets.stdout_lines }}"
   when: secrets.changed
   no_log: true
-- set_fact:
+- name: Set fact salt
+  set_fact:
     salt: "{{ s2.stdout_lines }}"
   when: s.stat.exists
   no_log: true
 
 #- debug: var=salt
-

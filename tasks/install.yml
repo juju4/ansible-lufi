@@ -4,10 +4,14 @@
   apt: update_cache=yes cache_valid_time=86400
   changed_when: no
   when: ansible_os_family == 'Debian'
+  register: pkg_result
+  until: pkg_result is success
 
 - name: Lufi | Install essential packages
   package: name="{{ item }}" state=present
   with_items: "{{ lufi_pkg_deps }}"
+  register: pkg_result
+  until: pkg_result is success
 
 # https://github.com/ansible/ansible/issues/16612
 - block:
@@ -16,6 +20,8 @@
       package:
         name: libselinux-python
         state: present
+      register: pkg_result
+      until: pkg_result is success
     - action: setup
     - debug: var=ansible_selinux
   when: ansible_os_family == "RedHat"
@@ -28,6 +34,8 @@
         - libselinux-python
         - libsemanage-python
         - policycoreutils-python
+      register: pkg_result
+      until: pkg_result is success
 
     - name: RedHat | Allow proxy to network connect in selinux
       seboolean:
@@ -56,3 +64,5 @@
 - name: Lufi | Install Carton
   cpanm:
     name: Carton
+  register: pkg_result
+  until: pkg_result is success

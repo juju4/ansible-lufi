@@ -20,5 +20,5 @@
     - nginx_client_max_body_size: "5m"
   roles:
     - geerlingguy.nginx
-    - juju4.harden-nginx
+    - juju4.harden_nginx
     - noplanman.lufi

@@ -9,4 +9,3 @@
     groups: "{{ lufi_group }}"
     append: yes
     home: "{{ lufi_home }}"
-
