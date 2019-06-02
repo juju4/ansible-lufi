@@ -21,4 +21,4 @@ galaxy_info:
     - files
     - hosting
 dependencies:
-  - juju4.redhat-epel
+  - juju4.redhat_epel

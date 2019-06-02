@@ -1,9 +1,11 @@
 ---
 
-- name: reload lufi systemd daemons
-  command: systemctl daemon-reload
-  notify: restart lufi
-  when: ansible_service_mgr == 'systemd'
+- name: reload systemd daemon
+  systemd:
+    daemon_reload: yes
+  when: >
+    ansible_service_mgr == 'systemd' and
+    not (ansible_virtualization_type is defined and ansible_virtualization_type == "docker")
 
 - name: restart lufi
   service: name=lufi state=restarted enabled=yes

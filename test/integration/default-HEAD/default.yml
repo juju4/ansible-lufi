@@ -2,6 +2,7 @@
 
 - hosts: all
   vars:
+    - lufi_version: HEAD
 ## 100MB
     - lufi_max_total_size: 107374182400
     - lufi_delete_no_longer_viewed_files: 7

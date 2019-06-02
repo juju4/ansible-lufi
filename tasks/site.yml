@@ -2,11 +2,12 @@
 
 - name: Lufi | Checkout git repository
   git:
-    repo: https://framagit.org/luc/lufi.git
+    repo: https://framagit.org/fiat-tux/hat-softwares/lufi.git
 #    repo: https://github.com/ldidry/lufi.git
 #    repo: https://framagit.org/noplanman/lufi.git
     dest: "{{ lufi_working_dir }}"
     update: "{{ lufi_keep_updated }}"
+    version: "{{ lufi_version | default('0.03.5') }}"
     force: yes
   register: lufi_git_updated
   changed_when: lufi_git_updated.after != lufi_git_updated.before
@@ -17,7 +18,8 @@
 
 - include: random.yml
 
-- set_fact:
+- name: Set fact lufi_proxy
+  set_fact:
     lufi_proxy: yes
   when: lufi_reverseproxy is defined and (lufi_reverseproxy == 'nginx' or lufi_reverseproxy == 'apache')
 
@@ -33,7 +35,7 @@
 
 ## FIXME! command fails on trusty, not creating lufi.db
 - name: Lufi | Install lufi
-  command: carton install
+  command: "carton install {{ lufi_carton_install_args }}"
   args:
     chdir: "{{ lufi_working_dir }}"
     creates: "{{ lufi_db_path }}"

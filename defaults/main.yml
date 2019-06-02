@@ -12,11 +12,14 @@ lufi_listen:
    - 'http://127.0.0.1:8080'
 #   - "http://{{ ansible_default_ipv4.address }}:8080"
 lufi_contact: "admin@lufi.example.com"
+lufi_report: "security@lufi.example.com"
 
 # Optional
 lufi_db_type: sqlite
 lufi_db_path: "lufi.db"
+lufi_carton_install_args: '--deployment --without=test --without=postgresql --without=mysql'
 #lufi_db_type: postgres
+#lufi_carton_install_args: '--deployment --without=test --without=sqlite --without=mysql'
 lufi_db_name: lufidb
 lufi_db_host: localhost
 lufi_db_user: lufiuser

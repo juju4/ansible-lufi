@@ -30,6 +30,11 @@
     # MANDATORY
     contact => '{{ lufi_contact }}',
 
+    # put an URL or an email address to receive file reports and uncomment it
+    # it's for make reporting illegal files easy for users
+    # MANDATORY
+    report => '{{ lufi_report }}',
+
     # array of random strings used to encrypt cookies
     # optional, default is ['fdjsofjoihrei'], PLEASE, CHANGE IT
     secrets => [
