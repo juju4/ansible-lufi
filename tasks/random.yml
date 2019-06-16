@@ -8,6 +8,8 @@
   package: name=openssl state=present
   register: pkg_result
   until: pkg_result is success
+  become: yes
+
 - name: Generating salt
   shell: >
     (for i in `seq 10`; do openssl rand -base64 32 | sed 's@[=\\/\\+]@@g;'; done) |
