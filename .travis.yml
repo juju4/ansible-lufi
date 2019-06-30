@@ -11,7 +11,7 @@ install:
   - pip install ansible ansible-lint
   - ansible --version
   - "{ echo '[defaults]'; echo 'callback_whitelist = profile_tasks, timer'; echo 'roles_path = ../'; } >> ansible.cfg"
-  - gem2.0 --version
+  - gem --version
 
 script:
   - "echo \"localhost\" > inventory"
