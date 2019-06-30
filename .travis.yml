@@ -28,8 +28,8 @@ script:
 
 after_script:
   - ps axuw
-  - netstat -anp
-  - ss -nlp
+  - sudo netstat -anp
+  - sudo ss -nlp
   - systemctl -l --no-pager status lufi
   - systemctl -l --no-pager status
-  - journalctl -xe --no-page
+  - sudo journalctl -xe --no-page
