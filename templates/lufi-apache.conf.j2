@@ -1,5 +1,5 @@
+{{ ansible_managed | comment }}
 ## https://framagit.org/luc/lufi/wikis/installation as virtualhost
-# {{ ansible_managed }}
 
 {% if lufi_virtualhost %}
 Listen {{ lufi_serverlisten }} {% if lufi_reverseproxy_https %}https{% endif %}
