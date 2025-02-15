@@ -32,7 +32,7 @@ jobs:
           - distribution: ubuntu
             version: '24.04'
             suite: default-nginx
-            experimental: true
+            experimental: false
     env:
       ANSIBLE_CALLBACKS_ENABLED: profile_tasks
       ANSIBLE_EXTRA_VARS: ""
@@ -124,15 +124,16 @@ jobs:
       - name: After script - curl
         run: |
           set -x
-          curl -v http://localhost:8080
-          curl -v http://localhost:8080/upload
+          curl -v http://localhost:8080 || true
+          curl -v http://localhost:8080/upload || true
+          curl -vk https://localhost:8080/upload || true
         if: ${{ always() }}
         continue-on-error: true
       - name: After script - lufi-cli
         run: |
           set -x
           ls
-          wget https://framagit.org/fiat-tux/hat-softwares/lufi-cli/uploads/3dc6076d660cc89d7c7850aa5f4e5ed2/lufi-linux-x64
+          wget -q https://framagit.org/fiat-tux/hat-softwares/lufi-cli/uploads/3dc6076d660cc89d7c7850aa5f4e5ed2/lufi-linux-x64
           sha256sum lufi-linux-x64
           chmod 755 lufi-linux-x64
           ./lufi-linux-x64 -u $GITHUB_WORKSPACE/$ANSIBLE_ROLE/README.md -s http://localhost:8080 -v || true
@@ -141,7 +142,8 @@ jobs:
         continue-on-error: true
       - name: After script - logs
         run: |
-          cat /var/www-lufi/src/log/production.log || true
+          ls -l /var/www-lufi/src/log/
+          sudo cat /var/www-lufi/src/log/production.log || true
         if: ${{ always() }}
         continue-on-error: true
       - name: After script - nginx config
