@@ -126,7 +126,7 @@ jobs:
           set -x
           curl -v http://localhost:8080 || true
           curl -v http://localhost:8080/upload || true
-          curl -vk https://localhost:8080/upload || true
+          curl -vk https://localhost/upload || true
         if: ${{ always() }}
         continue-on-error: true
       - name: After script - lufi-cli
