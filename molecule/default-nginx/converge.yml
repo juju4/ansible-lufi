@@ -8,7 +8,7 @@
     no_proxy: "{{ lookup('env', 'no_proxy') }}"
   remote_user: root
   vars:
-    hardenwebserver_https_template: lufi-nginx.conf.j2
+    hardenwebserver_https_template: ../../templates/lufi-nginx.conf.j2
     lufi_reverseproxy: 'nginx'
     lufi_serverlisten: 443
     lufi_reverseproxy_https_conf: |
