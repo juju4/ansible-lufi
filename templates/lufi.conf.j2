@@ -123,7 +123,7 @@
     # optional, default is using max_delay (see above) for all sizes
     #delay_for_size  => {
     #    10000000   => 90, # between 10MB and 50MB => max is 90 days, less than 10MB => max is max_delay (see above)
-    #    50000000   => 60, # between 50MB ans 1GB  => max is 60 days
+    #    50000000   => 60, # between 50MB and 1GB  => max is 60 days
     #    1000000000 => 2,  # more than 1GB         => max is 2 days
     #},
 
@@ -184,7 +184,7 @@
 
     # PostgreSQL ONLY - only used if dbtype is set to postgresql
     # these are the credentials to access the PostgreSQL database
-    # mandatory if you choosed postgresql as dbtype
+    # mandatory if you choose postgresql as dbtype
     pgdb => {
         database => '{{ lufi_db_name }}',
         host     => '{{ lufi_db_host }}',
@@ -215,7 +215,7 @@
     #    user_filter => '!(uid=ldap_user)'
     #},
 
-    # if you setted ldap above, the session will last `session_duration` seconds before
+    # if you set ldap above, the session will last `session_duration` seconds before
     # the user needs to reauthenticate
     # optional, default is 3600
     #session_duration => 3600,
