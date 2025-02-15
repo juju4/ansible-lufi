@@ -21,7 +21,7 @@
     lufi_servername: "{{ hardenwebserver_target_host_cn }}"
     lufi_csp: >-
       default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self' wss://{{ lufi_servername }};
-      img-src 'self'; style-src 'self' 'unsafe-inline'; object-src 'self';"
+      img-src 'self'; style-src 'self' 'unsafe-inline'; object-src 'self';
     hardenwebserver_target_host_san:
       - "lufi.internal"
       - "{{ ansible_hostname }}.internal"
