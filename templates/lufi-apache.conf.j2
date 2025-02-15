@@ -2,7 +2,11 @@
 ## https://framagit.org/luc/lufi/wikis/installation as virtualhost
 
 {% if lufi_virtualhost %}
-Listen {{ lufi_serverlisten }} {% if lufi_reverseproxy_https %}https{% endif %}
+{%     if lufi_reverseproxy_https %}
+Listen {{ lufi_serverlisten }} https
+{%     else %}
+Listen {{ lufi_serverlisten }}
+{%     endif %}
 
 <Virtualhost {{ lufi_servername }}:{{ lufi_serverlisten }}>
 {% endif %}
