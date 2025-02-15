@@ -1,15 +1,20 @@
 ---
 
-- name: reload systemd daemon
-  systemd:
-    daemon_reload: yes
+- name: Reload systemd daemon
+  ansible.builtin.systemd:
+    daemon_reload: true
   when: >
     ansible_service_mgr == 'systemd' and
     not (ansible_virtualization_type is defined and ansible_virtualization_type == "docker")
 
-- name: restart lufi
-  service: name=lufi state=restarted enabled=yes
+- name: Restart lufi
+  ansible.builtin.service:
+    name: lufi
+    state: restarted
+    enabled: true
   when: ansible_service_mgr == 'sysvinit' or ansible_service_mgr == 'upstart' or ansible_service_mgr == 'systemd'
 
-- name: restart nginx
-  service: name=nginx state=restarted
+- name: Restart nginx
+  ansible.builtin.service:
+    name: nginx
+    state: restarted

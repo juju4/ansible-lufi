@@ -1,23 +1,24 @@
 ---
 
-- hosts: all
+- name: Test play
+  hosts: all
   vars:
-## 100MB
-    - lufi_max_total_size: 107374182400
-    - lufi_delete_no_longer_viewed_files: 7
-    - keep_ip_during: 365
-    - lufi_reverseproxy: 'nginx'
-    - lufi_reverseproxy_https: true
-    - lufi_servername: lufi.example.com
-    - lufi_serverlisten: 1443
-    - lufi_origin: 127.0.0.1:8080
-    - lufi_reverseproxy_https_conf: |
+    ## 100MB
+    lufi_max_total_size: 107374182400
+    lufi_delete_no_longer_viewed_files: 7
+    keep_ip_during: 365
+    lufi_reverseproxy: 'nginx'
+    lufi_reverseproxy_https: true
+    lufi_servername: lufi.example.com
+    lufi_serverlisten: 1443
+    lufi_origin: 127.0.0.1:8080
+    lufi_reverseproxy_https_conf: |
             include /etc/nginx/harden-nginx-https;
             ssl_certificate {{ ssl_dir }}/{{ ansible_fqdn }}.crt;
             ssl_certificate_key {{ ssl_privatedir }}/{{ ansible_fqdn }}.key;
             access_log /var/log/nginx/lufi-access.log;
             error_log /var/log/nginx/lufi-error.log warn;
-    - nginx_client_max_body_size: "5m"
+    nginx_client_max_body_size: "5m"
   roles:
     - geerlingguy.nginx
     - juju4.harden_nginx

@@ -1,42 +1,48 @@
 ---
 
 - name: Set fact secretdir
-  set_fact:
+  ansible.builtin.set_fact:
     secretdir: "{{ lufi_working_dir }}"
 
-- name: ensure openssl is present
-  package: name=openssl state=present
+- name: Ensure openssl is present
+  ansible.builtin.package:
+    name: openssl
+    state: present
   register: pkg_result
   until: pkg_result is success
-  become: yes
+  become: true
 
 - name: Generating salt
-  shell: >
-    (for i in `seq 10`; do openssl rand -base64 32 | sed 's@[=\\/\\+]@@g;'; done) |
+  ansible.builtin.shell:
+    cmd: |
+      set -o pipefail
+      (for i in `seq 10`; do openssl rand -base64 32 | sed 's@[=\\/\\+]@@g;'; done) |
         tee {{ secretdir }}/.lufi_secrets
   args:
+    executable: /bin/bash
     creates: "{{ secretdir }}/.lufi_secrets"
   register: secrets
   changed_when: false
   no_log: true
 - name: Check if lufi secrets were generated
-  stat: path="{{ secretdir }}/.lufi_secrets"
+  ansible.builtin.stat:
+    path: "{{ secretdir }}/.lufi_secrets"
   register: s
 - name: Recover existing salt
-  command: "cat {{ secretdir }}/.lufi_secrets"
+  ansible.builtin.command: "cat {{ secretdir }}/.lufi_secrets"
   changed_when: false
   register: s2
   when: s.stat.exists
   no_log: true
 - name: Set fact salt
-  set_fact:
+  ansible.builtin.set_fact:  # noqa no-handler
     salt: "{{ secrets.stdout_lines }}"
   when: secrets.changed
   no_log: true
 - name: Set fact salt
-  set_fact:
+  ansible.builtin.set_fact:
     salt: "{{ s2.stdout_lines }}"
   when: s.stat.exists
   no_log: true
 
-#- debug: var=salt
+# - debug: var=salt

@@ -4,8 +4,8 @@ lufi_pkg_deps:
   - alpine-sdk
   - git
   - openssl-dev
-#  - cpanminus
-#  - cron
+  # - cpanminus
+  # - cron
   - acl
   - postgresql-dev
 

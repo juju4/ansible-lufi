@@ -1,41 +1,44 @@
 ---
 
 - name: Lufi | Checkout git repository
-  git:
+  ansible.builtin.git:
     repo: https://framagit.org/fiat-tux/hat-softwares/lufi.git
 #    repo: https://github.com/ldidry/lufi.git
 #    repo: https://framagit.org/noplanman/lufi.git
     dest: "{{ lufi_working_dir }}"
     update: "{{ lufi_keep_updated }}"
-    version: "{{ lufi_version | default('0.03.5') }}"
-    force: yes
+    version: "{{ lufi_version }}"
+    force: true
   register: lufi_git_updated
   changed_when: lufi_git_updated.after != lufi_git_updated.before
   notify:
-    - restart lufi
-- debug: var=lufi_git_updated
-#- fail: msg=stop
+    - Restart lufi
+- name: Debug
+  ansible.builtin.debug:
+    var: lufi_git_updated
+# - fail: msg=stop
 
-- include: random.yml
+- name: Import random
+  ansible.builtin.import_tasks: random.yml
 
 - name: Set fact lufi_proxy
-  set_fact:
-    lufi_proxy: yes
+  ansible.builtin.set_fact:
+    lufi_proxy: true
   when: lufi_reverseproxy is defined and (lufi_reverseproxy == 'nginx' or lufi_reverseproxy == 'apache')
 
 ## FIXME! any option to validate config?
 - name: Lufi | Copy config
-  template:
+  ansible.builtin.template:
     src: lufi.conf.j2
     dest: "{{ lufi_working_dir }}/lufi.conf"
-    mode: 0644
+    mode: '0644'
 #    validate: 'cmd %s'
   notify:
-    - restart lufi
+    - Restart lufi
 
 ## FIXME! command fails on trusty, not creating lufi.db
 - name: Lufi | Install lufi
-  command: "carton install {{ lufi_carton_install_args }}"
+  ansible.builtin.command: "carton install {{ lufi_carton_install_args }}"
   args:
     chdir: "{{ lufi_working_dir }}"
     creates: "{{ lufi_db_path }}"
@@ -43,10 +46,10 @@
     PATH: '/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin'
   register: lufi_app_installed
   notify:
-    - restart lufi
+    - Restart lufi
 
 - name: Lufi | Update lufi
-  command: carton update
+  ansible.builtin.command: carton update
   args:
     chdir: "{{ lufi_working_dir }}"
   environment:
@@ -55,15 +58,15 @@
   register: lufi_app_updated
   changed_when: "'Successfully installed' in lufi_app_updated.stdout"
   notify:
-    - restart lufi
+    - Restart lufi
 ## FIXME! fail on centos7 'Could not find module Apache::Htpasswd.'
   ignore_errors: true
 
-#- name: Lufi | Set ownership on working directory
-#  file:
-#    path: "{{ lufi_working_dir }}"
-#    state: directory
-#    owner: "{{ lufi_user }}"
-#    group: "{{ lufi_group }}"
-#    recurse: yes
-#  changed_when: no
+# - name: Lufi | Set ownership on working directory
+#   file:
+#     path: "{{ lufi_working_dir }}"
+#     state: directory
+#     owner: "{{ lufi_user }}"
+#     group: "{{ lufi_group }}"
+#     recurse: yes
+#   changed_when: no

@@ -1,15 +1,16 @@
 ---
 
 - name: Lufi | Copy upstart service config
-  template:
+  ansible.builtin.template:
     src: etc/default/lufi.j2
     dest: /etc/default/lufi
     owner: root
     group: root
-    mode: 0644
-  notify: restart lufi
+    mode: '0644'
+  notify:
+    - Restart lufi
 
 - name: Lufi | Copy upstart config
-  command: cp {{ lufi_working_dir }}/utilities/lufi_upstart.conf /etc/init/lufi.conf
+  ansible.builtin.command: "cp {{ lufi_working_dir }}/utilities/lufi_upstart.conf /etc/init/lufi.conf"
   args:
     creates: /etc/init/lufi.conf

@@ -1,7 +1,7 @@
 ---
 
 - name: Debian | Ensure required apache modules are loaded
-  apache2_module:
+  community.general.apache2_module:
     state: present
     name: "{{ item }}"
   with_items:
@@ -11,18 +11,18 @@
     - proxy_wstunnel
   when: lufi_reverseproxy is defined and lufi_reverseproxy == 'apache' and ansible_os_family == 'Debian'
 
-- name: install lufi nginx reverseproxy configuration
-  template:
+- name: Nginx | Install lufi nginx reverseproxy configuration
+  ansible.builtin.template:
     src: lufi-nginx.conf.j2
     dest: "{{ nginx_sitedir }}/lufi.conf"
     mode: '0644'
-    backup: yes
+    backup: true
   when: lufi_reverseproxy is defined and lufi_reverseproxy == 'nginx'
   notify:
-    - restart nginx
+    - Restart nginx
 
 - name: Debian | enable nginx reverseproxy
-  file:
+  ansible.builtin.file:
     src: "{{ nginx_sitedir }}/lufi.conf"
     dest: "/etc/nginx/sites-enabled/lufi.conf"
     state: 'link'
@@ -30,19 +30,19 @@
   notify:
     - restart nginx
 
-- name: install lufi apache reverseproxy configuration
-  template:
+- name: Apache | Install lufi apache reverseproxy configuration
+  ansible.builtin.template:
     src: lufi-apache.conf.j2
     dest: "{{ apache_sitedir }}/lufi.conf"
     mode: '0644'
-    backup: yes
+    backup: true
   when: lufi_reverseproxy is defined and lufi_reverseproxy == 'apache'
 
 - name: Debian | enable lufi apache reverseproxy configuration
-  file:
+  ansible.builtin.file:
     src: "{{ apache_sitedir }}/lufi.conf"
     dest: "/etc/apache2/sites-enabled/lufi.conf"
     state: 'link'
   when: lufi_reverseproxy is defined and lufi_reverseproxy == 'apache' and ansible_os_family == 'Debian'
   notify:
-    - restart apache
+    - Restart apache

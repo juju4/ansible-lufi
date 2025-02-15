@@ -10,11 +10,11 @@ lufi_pkg_deps:
   - crontabs
   - acl
   - postgresql-devel
-# serverspec testing
+  # serverspec testing
   - iproute
 
 www_user: apache
-#www_user: nginx
+# www_user: nginx
 www_root: '/var/www'
 nginx_sitedir: /etc/nginx/conf.d
 apache_confdir: /etc/httpd/conf.d
