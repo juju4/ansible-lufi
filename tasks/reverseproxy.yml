@@ -28,7 +28,7 @@
     state: 'link'
   when: lufi_reverseproxy is defined and lufi_reverseproxy == 'nginx' and ansible_os_family == 'Debian'
   notify:
-    - restart nginx
+    - Restart nginx
 
 - name: Apache | Install lufi apache reverseproxy configuration
   ansible.builtin.template:
