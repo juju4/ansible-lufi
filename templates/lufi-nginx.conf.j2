@@ -2,7 +2,7 @@
 ## from https://framagit.org/luc/lufi/wikis/installation
 
 server {
-    listen {{ lufi_serverlisten }};
+    listen {{ lufi_serverlisten }} ssl http2;
 
     # Adapt this to your domain!
     server_name {{ lufi_servername }};

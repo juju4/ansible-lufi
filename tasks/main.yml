@@ -13,41 +13,41 @@
   include_vars: "Alpine.yml"
   when: ansible_os_family == "Alpine"
 
-- include: install.yml
+- ansible.builtin.import_tasks: install.yml
   tags: lufi:install
 
-- include: user.yml
+- ansible.builtin.import_tasks: user.yml
   when: lufi_user != 'www-data'
 
 - name: ensure .cpanm directory exists for lufi user
   file: dest={{ lufi_home }}/.cpanm state=directory owner={{ lufi_user }} mode=0700
 
   tags: lufi:site
-- include: site.yml
+- ansible.builtin.import_tasks: site.yml
   tags: lufi:site
   become: yes
   become_user: "{{ lufi_user }}"
 
 ## FIXME! kitchen/docker: ansible_service_mgr = sshd???
 - debug: var=ansible_service_mgr
-#- include: service-{{ ansible_service_mgr }}.yml
+#- ansible.builtin.import_tasks: service-{{ ansible_service_mgr }}.yml
 #  tags: lufi:service
 #  when: ansible_service_mgr == 'sysvinit' or ansible_service_mgr == 'upstart' or ansible_service_mgr == 'systemd'
-- include: service-systemd.yml
+- ansible.builtin.import_tasks: service-systemd.yml
   when: >
     (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version|int >= 16) or
     (ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7) or
     (ansible_distribution == 'Debian' and ansible_distribution_major_version|int > 8)
-- include: service-upstart.yml
+- ansible.builtin.import_tasks: service-upstart.yml
   when: ansible_distribution_release == 'trusty'
-- include: service-sysvinit.yml
+- ansible.builtin.import_tasks: service-sysvinit.yml
   when: >
     ansible_distribution_release == 'precise' or
     (ansible_os_family == "RedHat" and ansible_distribution_major_version == '6')
 
-- include: cron.yml
+- ansible.builtin.import_tasks: cron.yml
   tags: lufi:cron
-- include: reverseproxy.yml
+- ansible.builtin.import_tasks: reverseproxy.yml
 
 - meta: flush_handlers
 

@@ -4,6 +4,7 @@ lufi_user: www-lufi
 lufi_group: www-lufi
 lufi_home: "/var/www-lufi"
 
+lufi_version: 0.07.0
 lufi_keep_updated: yes
 
 ## this is differentiated from lufi_home as it is a git directory

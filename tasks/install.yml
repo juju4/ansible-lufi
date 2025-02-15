@@ -63,5 +63,6 @@
 - name: Lufi | Install Carton
   cpanm:
     name: Carton
+    mirror: '{{ lufi_cpanm_mirror | default("https://cpan.metacpan.org/") }}'
   register: pkg_result
   until: pkg_result is success
