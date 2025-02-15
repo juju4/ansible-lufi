@@ -103,21 +103,25 @@ jobs:
           systemctl -l --no-pager status lufi || true
           systemd-analyze --no-pager security || true
           systemd-analyze --no-pager security lufi || true
+        if: ${{ always() }}
         continue-on-error: true
       - name: After script - network
         run: |
           netstat -anp || true
           ss -nlp || true
+        if: ${{ always() }}
         continue-on-error: true
       - name: After script - config
         run: |
           sudo cat /var/www-lufi/src/lufi.conf
+        if: ${{ always() }}
         continue-on-error: true
       - name: After script - curl
         run: |
           set -x
           curl -v http://localhost:8080
           curl -v http://localhost:8080/upload
+        if: ${{ always() }}
         continue-on-error: true
       - name: After script - lufi-cli
         run: |
@@ -128,8 +132,10 @@ jobs:
           chmod 755 lufi-linux-x64
           ./lufi-linux-x64 -u $GITHUB_WORKSPACE/$ANSIBLE_ROLE/README.md -s http://localhost:8080 -v || true
           ./lufi-linux-x64 -u $GITHUB_WORKSPACE/$ANSIBLE_ROLE/README.md -s https://localhost -v || true
+        if: ${{ always() }}
         continue-on-error: true
       - name: After script - logs
         run: |
-          cat /var/log/supervisor/up1.out || true
+          cat /var/www-lufi/src/log/production.log || true
+        if: ${{ always() }}
         continue-on-error: true
