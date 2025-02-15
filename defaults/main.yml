@@ -73,4 +73,4 @@ lufi_serverlisten: 1443
 # if empty, not applied
 # https://outlandish.com/blog/configure-content-security-policy-with-websockets-and-express/
 # lufi_csp: ""
-lufi_csp: "default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self' ws://localhost ws://{{ lufi_servername }}:{{ lufi_serverlisten }} wss://{{ lufi_servername }}:{{ lufi_serverlisten }}; img-src 'self'; style-src 'self' 'unsafe-inline'; object-src 'self';"
+lufi_csp: "default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self' ws://localhost ws://{{ lufi_servername }}:{{ lufi_serverlisten }} wss://{{ lufi_servername }}:{{ lufi_serverlisten }}; img-src 'self'; style-src 'self' 'unsafe-inline'; object-src 'self';"  # noqa yaml[line-length]
