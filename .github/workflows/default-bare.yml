@@ -107,6 +107,7 @@ jobs:
           systemctl -l --no-pager status lufi || true
           systemd-analyze --no-pager security || true
           systemd-analyze --no-pager security lufi || true
+          systemctl -l --no-pager status nginx || true
         if: ${{ always() }}
         continue-on-error: true
       - name: After script - network
@@ -148,5 +149,11 @@ jobs:
           set -x
           ls -l /var/log/nginx/
           sudo tail -n100 /var/log/nginx/*log || true
+        if: ${{ always() }}
+        continue-on-error: true
+      - name: After script - journalctl
+        run: |
+          set -x
+          sudo journalctl -l --no-pager | tail -1000 || true
         if: ${{ always() }}
         continue-on-error: true
