@@ -144,6 +144,12 @@ jobs:
           cat /var/www-lufi/src/log/production.log || true
         if: ${{ always() }}
         continue-on-error: true
+      - name: After script - nginx config
+        run: |
+          set -x
+          sudo cat /etc/nginx/sites-enabled/https
+        if: ${{ always() }}
+        continue-on-error: true
       - name: After script - nginx logs
         run: |
           set -x
