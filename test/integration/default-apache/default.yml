@@ -1,17 +1,18 @@
 ---
 
-- hosts: all
+- name: Test play
+  hosts: all
   vars:
-## 100MB
-    - lufi_max_total_size: 107374182400
-    - lufi_delete_no_longer_viewed_files: 7
-    - keep_ip_during: 365
-    - lufi_reverseproxy: 'apache'
-    - lufi_reverseproxy_https: true
-    - lufi_servername: lufi.example.com
-    - lufi_serverlisten: 1443
-    - lufi_origin: 127.0.0.1:8080
-    - lufi_reverseproxy_https_conf: |
+    ## 100MB
+    lufi_max_total_size: 107374182400
+    lufi_delete_no_longer_viewed_files: 7
+    keep_ip_during: 365
+    lufi_reverseproxy: 'apache'
+    lufi_reverseproxy_https: true
+    lufi_servername: lufi.example.com
+    lufi_serverlisten: 1443
+    lufi_origin: 127.0.0.1:8080
+    lufi_reverseproxy_https_conf: |
         SSLEngine on
         Include /etc/apache2/harden-apache2-https.conf
         SSLCertificateFile /etc/ssl/{{ ansible_fqdn }}.crt
@@ -19,18 +20,19 @@
         CustomLog "/var/log/apache2/lufi_access_log" combined
         ErrorLog "/var/log/apache2/lufi_error_log"
   pre_tasks:
-# Can't set hostname in docker...
-# 'Could not set property: Failed to set static hostname: Device or resource busy'
-    - name: set hostname before certificate creation
-      hostname:
+    # Can't set hostname in docker...
+    # 'Could not set property: Failed to set static hostname: Device or resource busy'
+    - name: Set hostname before certificate creation
+      ansible.builtin.hostname:
         name: "{{ lufi_servername }}"
-      ignore_errors: true
-    - name: add servername to /etc/hosts
-      lineinfile:
+      failed_when: false
+    - name: Add servername to /etc/hosts
+      ansible.builtin.lineinfile:
         dest: /etc/hosts
         line: '127.0.0.1 lufi.example.com'
-      ignore_errors: true
-    - set_fact:
+      failed_when: false
+    - name: Set fact
+      ansible.builtin.set_fact:
         lufi_reverseproxy_https_conf: |
             SSLEngine on
             Include /etc/httpd/harden-apache2-https.conf

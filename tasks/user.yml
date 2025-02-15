@@ -1,12 +1,12 @@
 ---
 
-- name: ensure lufi group exists
-  group:
+- name: Ensure lufi group exists
+  ansible.builtin.group:
     name: "{{ lufi_group }}"
 
-- name: ensure lufi user exists
-  user:
+- name: Ensure lufi user exists
+  ansible.builtin.user:
     name: "{{ lufi_user }}"
     groups: "{{ lufi_group }}"
-    append: yes
+    append: true
     home: "{{ lufi_home }}"

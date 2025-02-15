@@ -5,13 +5,13 @@ lufi_group: www-lufi
 lufi_home: "/var/www-lufi"
 
 lufi_version: 0.07.0
-lufi_keep_updated: yes
+lufi_keep_updated: true
 
 ## this is differentiated from lufi_home as it is a git directory
 lufi_working_dir: "{{ lufi_home }}/src"
 lufi_listen:
    - 'http://127.0.0.1:8080'
-#   - "http://{{ ansible_default_ipv4.address }}:8080"
+   # - "http://{{ ansible_default_ipv4.address }}:8080"
 lufi_contact: "admin@lufi.example.com"
 lufi_report: "security@lufi.example.com"
 
@@ -19,8 +19,8 @@ lufi_report: "security@lufi.example.com"
 lufi_db_type: sqlite
 lufi_db_path: "lufi.db"
 lufi_carton_install_args: '--deployment --without=test --without=postgresql --without=mysql'
-#lufi_db_type: postgres
-#lufi_carton_install_args: '--deployment --without=test --without=sqlite --without=mysql'
+# lufi_db_type: postgres
+# lufi_carton_install_args: '--deployment --without=test --without=sqlite --without=mysql'
 lufi_db_name: lufidb
 lufi_db_host: localhost
 lufi_db_user: lufiuser
@@ -28,30 +28,30 @@ lufi_db_userpass: lufipass
 
 lufi_workers: 30
 lufi_clients: 1
-#lufi_theme: "default"
-#lufi_proxy: no
-#lufi_url_length: 8
-#lufi_provis_step: 5
-#lufi_provisioning: 100
-#lufi_token_length: 32
-#lufi_max_file_size: 104857600
-#lufi_piwik_img: ""
-#lufi_broadcast_message: ""
-#lufi_default_delay: 0
-#lufi_max_delay: 0
-#lufi_allowed_domains: []
-#lufi_fixed_domain: ""
-#lufi_mail_sender: "no-reply@lufi.io"
-#lufi_upload_dir: "files"
-#lufi_session_duration: 3600
-#lufi_keep_ip_during: 365
-#lufi_max_total_size: 10*1024*1024*1024
-#lufi_policy_when_full: "warn"
-#lufi_delete_no_longer_viewed_files: 90
+# lufi_theme: "default"
+# lufi_proxy: no
+# lufi_url_length: 8
+# lufi_provis_step: 5
+# lufi_provisioning: 100
+# lufi_token_length: 32
+# lufi_max_file_size: 104857600
+# lufi_piwik_img: ""
+# lufi_broadcast_message: ""
+# lufi_default_delay: 0
+# lufi_max_delay: 0
+# lufi_allowed_domains: []
+# lufi_fixed_domain: ""
+# lufi_mail_sender: "no-reply@lufi.io"
+# lufi_upload_dir: "files"
+# lufi_session_duration: 3600
+# lufi_keep_ip_during: 365
+# lufi_max_total_size: 10*1024*1024*1024
+# lufi_policy_when_full: "warn"
+# lufi_delete_no_longer_viewed_files: 90
 
 ## This will not install webservers, just push lufi virtualhost or subdir configuration
-#lufi_reverseproxy: 'apache'
-#lufi_reverseproxy: 'nginx'
+# lufi_reverseproxy: 'apache'
+# lufi_reverseproxy: 'nginx'
 lufi_reverseproxy_https: true
 lufi_reverseproxy_https_conf: |
     SSLEngine on
@@ -60,17 +60,17 @@ lufi_reverseproxy_https_conf: |
     SSLCertificateKeyFile /path/to/localhost.key
     CustomLog "logs/lufi_access_log" combined
     ErrorLog "logs/lufi_error_log"
-#lufi_servername: lufi.example.com
+# lufi_servername: lufi.example.com
 lufi_servername: localhost
 lufi_origin: 127.0.0.1:8080
 lufi_virtualhost: true
 lufi_prefix: "/"
-#lufi_serverlisten: 80
+# lufi_serverlisten: 80
 lufi_serverlisten: 1443
-#lufi_virtualhost: false
-#lufi_prefix: "/lufi"
+# lufi_virtualhost: false
+# lufi_prefix: "/lufi"
 
 # if empty, not applied
 # https://outlandish.com/blog/configure-content-security-policy-with-websockets-and-express/
-#lufi_csp: ""
+# lufi_csp: ""
 lufi_csp: "default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self' ws://localhost ws://{{ lufi_servername }}:{{ lufi_serverlisten }} wss://{{ lufi_servername }}:{{ lufi_serverlisten }}; img-src 'self'; style-src 'self' 'unsafe-inline'; object-src 'self';"

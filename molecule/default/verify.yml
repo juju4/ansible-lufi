@@ -43,7 +43,7 @@
       ansible.builtin.stat:
         path: "{{ exec_file }}"
       register: bin1
-      become: yes
+      become: true
     - name: Validate executable is present
       ansible.builtin.assert:
         that:

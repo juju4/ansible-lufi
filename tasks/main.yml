@@ -1,68 +1,86 @@
 ---
 
 - name: Include version-specific variables for Ubuntu.
-  include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
+  ansible.builtin.include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
   when: ansible_distribution == 'Ubuntu'
 - name: Include version-specific variables for Debian
-  include_vars: "Debian-{{ ansible_distribution_version.split('.')[0] }}.yml"
+  ansible.builtin.include_vars: "Debian-{{ ansible_distribution_version.split('.')[0] }}.yml"
   when: ansible_distribution == 'Debian'
 - name: Include version-specific variables for RedHat
-  include_vars: "RedHat-{{ ansible_distribution_version.split('.')[0] }}.yml"
+  ansible.builtin.include_vars: "RedHat-{{ ansible_distribution_version.split('.')[0] }}.yml"
   when: ansible_os_family == "RedHat"
 - name: Include version-specific variables for Alpine
-  include_vars: "Alpine.yml"
+  ansible.builtin.include_vars: "Alpine.yml"
   when: ansible_os_family == "Alpine"
 
-- ansible.builtin.import_tasks: install.yml
+- name: Import install
+  ansible.builtin.import_tasks: install.yml
   tags: lufi:install
 
-- ansible.builtin.import_tasks: user.yml
+- name: Import user
+  ansible.builtin.import_tasks: user.yml
   when: lufi_user != 'www-data'
 
-- name: ensure .cpanm directory exists for lufi user
-  file: dest={{ lufi_home }}/.cpanm state=directory owner={{ lufi_user }} mode=0700
-
+- name: Ensure .cpanm directory exists for lufi user
+  ansible.builtin.file:
+    dest: "{{ lufi_home }}/.cpanm"
+    state: directory
+    owner: "{{ lufi_user }}"
+    mode: '0700'
   tags: lufi:site
-- ansible.builtin.import_tasks: site.yml
+- name: Import site
+  ansible.builtin.import_tasks: site.yml
   tags: lufi:site
-  become: yes
+  become: true
   become_user: "{{ lufi_user }}"
 
 ## FIXME! kitchen/docker: ansible_service_mgr = sshd???
-- debug: var=ansible_service_mgr
-#- ansible.builtin.import_tasks: service-{{ ansible_service_mgr }}.yml
-#  tags: lufi:service
-#  when: ansible_service_mgr == 'sysvinit' or ansible_service_mgr == 'upstart' or ansible_service_mgr == 'systemd'
-- ansible.builtin.import_tasks: service-systemd.yml
+- name: Debug
+  ansible.builtin.debug:
+    var: ansible_service_mgr
+# - ansible.builtin.import_tasks: service-{{ ansible_service_mgr }}.yml
+#   tags: lufi:service
+#   when: ansible_service_mgr == 'sysvinit' or ansible_service_mgr == 'upstart' or ansible_service_mgr == 'systemd'
+- name: Import service-systemd
+  ansible.builtin.import_tasks: service-systemd.yml
   when: >
     (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version|int >= 16) or
     (ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7) or
     (ansible_distribution == 'Debian' and ansible_distribution_major_version|int > 8)
-- ansible.builtin.import_tasks: service-upstart.yml
+- name: Import service-upstart
+  ansible.builtin.import_tasks: service-upstart.yml
   when: ansible_distribution_release == 'trusty'
-- ansible.builtin.import_tasks: service-sysvinit.yml
+- name: Import service-sysvinit
+  ansible.builtin.import_tasks: service-sysvinit.yml
   when: >
     ansible_distribution_release == 'precise' or
     (ansible_os_family == "RedHat" and ansible_distribution_major_version == '6')
 
-- ansible.builtin.import_tasks: cron.yml
+- name: Import cron
+  ansible.builtin.import_tasks: cron.yml
   tags: lufi:cron
-- ansible.builtin.import_tasks: reverseproxy.yml
+- name: Import reverseproxy
+  ansible.builtin.import_tasks: reverseproxy.yml
 
-- meta: flush_handlers
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
 
 # for docker, start manually service
-- block:
-    - name: docker | start lufi
-      command: "/usr/local/bin/carton exec hypnotoad script/lufi"
+- name: Docker run
+  when: not (ansible_service_mgr == 'sysvinit' or ansible_service_mgr == 'upstart' or ansible_service_mgr == 'systemd')
+  block:
+    - name: Docker | start lufi
+      ansible.builtin.command:  # noqa no-changed-when
+        cmd: "/usr/local/bin/carton exec hypnotoad script/lufi"
       args:
         chdir: "{{ lufi_working_dir }}"
-      become: yes
+      become: true
       become_user: "{{ lufi_user }}"
-    - name: docker | start apache reverseproxy
-      command: /etc/init.d/apache2 restart
+    - name: Docker | start apache reverseproxy
+      ansible.builtin.command:  # noqa no-changed-when
+        cmd: /etc/init.d/apache2 restart
       when: lufi_reverseproxy is defined and lufi_reverseproxy == 'apache' and ansible_os_family == 'Debian'
-    - name: docker | start nginx reverseproxy
-      command: /etc/init.d/nginx restart
+    - name: Docker | start nginx reverseproxy
+      ansible.builtin.command:  # noqa no-changed-when
+        cmd: /etc/init.d/nginx restart
       when: lufi_reverseproxy is defined and lufi_reverseproxy == 'nginx' and ansible_os_family == 'Debian'
-  when: not (ansible_service_mgr == 'sysvinit' or ansible_service_mgr == 'upstart' or ansible_service_mgr == 'systemd')

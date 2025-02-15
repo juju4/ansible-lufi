@@ -1,8 +1,9 @@
 ---
-- hosts: all
+- name: Test vagrant
+  hosts: all
   remote_user: vagrant
-  become: yes
-  roles: [../../]
+  become: true
+  # roles: [../../]  # noqa role-name[path]
   vars:
     lufi_user: root
     lufi_group: root
@@ -12,6 +13,8 @@
     lufi_secrets: ["array", "of", "random", "secrets"]
   post_tasks:
     - name: Lufi | Wait for the service to start up
-      pause: seconds=11
+      ansible.builtin.pause:
+        seconds: 11
     - name: Lufi | Check if lufi is running properly
-      uri: url={{ lufi_listen }}
+      ansible.builtin.uri:
+        url: "{{ lufi_listen }}"

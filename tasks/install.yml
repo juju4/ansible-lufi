@@ -1,34 +1,45 @@
 ---
 
 - name: Lufi | Update apt cache
-  apt: update_cache=yes cache_valid_time=86400
-  changed_when: no
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 86400
+  changed_when: false
   when: ansible_os_family == 'Debian'
   register: pkg_result
   until: pkg_result is success
 
 - name: Lufi | Install essential packages
-  package: name="{{ item }}" state=present
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
   with_items: "{{ lufi_pkg_deps }}"
   register: pkg_result
   until: pkg_result is success
 
 # https://github.com/ansible/ansible/issues/16612
-- block:
-    - debug: var=ansible_selinux
+- name: Selinux ansible
+  when: ansible_os_family == "RedHat"
+  block:
+    - name: Debug
+      ansible.builtin.debug:
+        var: ansible_selinux
     - name: RedHat | Ensure selinux dependencies are present
-      package:
+      ansible.builtin.package:
         name: libselinux-python
         state: present
       register: pkg_result
       until: pkg_result is success
     - name: Collect ansible facts again after selinux dependency install
-      action: setup
-    - debug: var=ansible_selinux
-  when: ansible_os_family == "RedHat"
-- block:
+      ansible.builtin.setup:
+    - name: Debug
+      ansible.builtin.debug:
+        var: ansible_selinux
+- name: Selinux
+  when: ansible_os_family == "RedHat" and ansible_selinux.status is defined and ansible_selinux.status != 'disabled'
+  block:
     - name: RedHat | Ensure selinux dependencies are present
-      package:
+      ansible.builtin.package:
         name: "{{ item }}"
         state: present
       with_items:
@@ -39,29 +50,28 @@
       until: pkg_result is success
 
     - name: RedHat | Allow proxy to network connect in selinux
-      seboolean:
+      ansible.posix.seboolean:
         name: httpd_can_network_connect
-        state: yes
-        persistent: yes
+        state: true
+        persistent: true
 
     - name: RedHat | Allow httpd to listen to unusual ports
-      seport:
+      community.general.seport:
         ports: "{{ lufi_serverlisten }}"
         proto: tcp
         setype: http_port_t
         state: present
       when: lufi_serverlisten != 80 and lufi_serverlisten != 443
-  when: ansible_os_family == "RedHat" and ansible_selinux.status is defined and ansible_selinux.status != 'disabled'
 
-#- name: Lufi | Install cpanm
-#  get_url:
-#    url: https://cpanmin.us
-#    dest: /usr/local/bin/cpanm
-#    mode: 0555
-#    checksum: 'sha256:453e68066f2faba5c9fe04b4ca47f915fe0001f71405560093a23919e5e30d65.'
+# - name: Lufi | Install cpanm
+#   get_url:
+#     url: https://cpanmin.us
+#     dest: /usr/local/bin/cpanm
+#     mode: 0555
+#     checksum: 'sha256:453e68066f2faba5c9fe04b4ca47f915fe0001f71405560093a23919e5e30d65.'
 
 - name: Lufi | Install Carton
-  cpanm:
+  community.general.cpanm:
     name: Carton
     mirror: '{{ lufi_cpanm_mirror | default("https://cpan.metacpan.org/") }}'
   register: pkg_result
