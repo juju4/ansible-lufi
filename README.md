@@ -105,6 +105,7 @@ lufi_broadcast_message: "Welcome to Lufi. Upload those files!"
 * files are written encrypted in {{ lufi_working_dir }}/files
 * activity log is inside lufi.db(sqlite3) and log/production.log
 * if using non-standard web ports, you need to update themes/default/templates/partial/index.js.ep (#149, #196)
+* while data is end-to-end encrypted, metadata are not (https://framagit.org/fiat-tux/hat-softwares/lufi/-/issues/225)
 
 ## License
 
