@@ -13,6 +13,7 @@ lufi_listen:
    - 'http://127.0.0.1:8080'
    # - "http://{{ ansible_default_ipv4.address }}:8080"
 lufi_contact: "admin@lufi.example.com"
+# lufi_contact: '<a href="https://contact.example.com">Contact page</a>'
 lufi_report: "security@lufi.example.com"
 
 # Optional
@@ -42,6 +43,8 @@ lufi_clients: 1
 # lufi_allowed_domains: []
 # lufi_fixed_domain: ""
 # lufi_mail_sender: "no-reply@lufi.io"
+# https://framagit.org/fiat-tux/hat-softwares/lufi/-/merge_requests/107
+lufi_disable_mail_sending: 1
 # lufi_upload_dir: "files"
 # lufi_session_duration: 3600
 # lufi_keep_ip_during: 365
