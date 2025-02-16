@@ -1,5 +1,15 @@
 ---
 
+- name: Lufi | Copy sysvinit service config
+  ansible.builtin.template:
+    src: etc/default/lufi.j2
+    dest: /etc/default/lufi
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    - Restart lufi
+
 - name: Lufi | Copy systemd service config
   ansible.builtin.template:
     src: lib/systemd/system/lufi.service.j2

@@ -15,6 +15,10 @@ PIDFile={{ lufi_working_dir }}/script/hypnotoad.pid
 ExecStart=/usr/local/bin/carton exec hypnotoad script/lufi
 ExecStop=/usr/local/bin/carton exec hypnotoad -s script/lufi
 ExecReload=/usr/local/bin/carton exec hypnotoad script/lufi
+EnvironmentFile=/etc/default/lufi
+
+# TODO hardening
+# Exposure level 9.2
 
 [Install]
 WantedBy=multi-user.target

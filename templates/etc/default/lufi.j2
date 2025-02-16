@@ -6,3 +6,7 @@ LDIR={{ lufi_working_dir }}/
 
 # USER is the user who will launch lufi
 USER={{ lufi_user }}
+{% if lufi_debug_enable is defined and lufi_debug_enable | bool %}
+
+MOJO_LOG_LEVEL="debug"
+{% endif %}
