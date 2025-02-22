@@ -1,0 +1,96 @@
+---
+
+- name: Converge
+  hosts: all
+  environment:
+    http_proxy: "{{ lookup('env', 'http_proxy') }}"
+    https_proxy: "{{ lookup('env', 'https_proxy') }}"
+    no_proxy: "{{ lookup('env', 'no_proxy') }}"
+  remote_user: root
+  vars:
+    hardenwebserver_https_template: ../../templates/lufi-nginx.conf.j2
+    lufi_repo: https://framagit.org/Booteille/lufi.git
+    lufi_version: HEAD
+    deno_version: v2.1.10
+    deno_target: x86_64-unknown-linux-gnu
+    deno_uri: "https://dl.deno.land/release/{{ deno_version }}/deno-{{ deno_target }}.zip"
+    lufi_reverseproxy: 'nginx'
+    lufi_serverlisten: 443
+    lufi_reverseproxy_https_conf: |
+        include /etc/nginx/harden-nginx-https;
+        ssl_certificate /etc/ssl/certs/lufi.internal.crt;
+        ssl_certificate_key /etc/ssl/private/lufi.internal.key;
+        access_log /var/log/nginx/lufi.access.log;
+        error_log /var/log/nginx/lufi.error.log;
+    hardenwebserver_target_host_cn: "lufi.internal"
+    lufi_servername: "{{ hardenwebserver_target_host_cn }}"
+    lufi_csp: >-
+      default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self' wss://{{ lufi_servername }};
+      img-src 'self'; style-src 'self' 'unsafe-inline'; object-src 'self';
+    lufi_debug_enable: true
+    hardenwebserver_target_host_san:
+      - "lufi.internal"
+      - "{{ ansible_hostname }}.internal"
+      - "{{ ansible_hostname }}"
+      # - "DNS:{{ ansible_fqdn }}"
+      - "{{ ansible_default_ipv4.address | default(ansible_all_ipv4_addresses[0]) }}"
+      - "localhost"
+
+    hardenwebserver_systemd_files_acl:
+      # - { p: "/etc/letsencrypt/live/{{ cribl_fqdn }}/privkey.pem", perm: r }
+      - { p: "/etc/ssl/private/dhparam4.pem", perm: r }
+      - { p: "/etc/ssl/private/{{ hardenwebserver_target_host_cn }}.key", perm: r }
+      - { p: "/etc/ssl/certs/{{ hardenwebserver_target_host_cn }}.crt", perm: r }
+      - { p: "/var/log/nginx/access.log", perm: rw }
+      # - { p: "/var/log/nginx/access_json.log", perm: rw }
+      - { p: "/var/log/nginx/error.log", perm: rw }
+      # - { p: "/var/log/nginx/lufi.access.log", perm: rw }
+      # - { p: "/var/log/nginx/lufi.error.log", perm: rw }
+  pre_tasks:
+    - name: Ubuntu | Install python3
+      ansible.builtin.raw: test -e /usr/bin/python3 || (apt -y update && apt install -y python3-minimal)
+      register: python3
+      changed_when: "'installed' in python3.stdout"
+      when: (ansible_distribution == "Ubuntu" and ansible_distribution_major_version | int >= 16)
+    - name: RedHat | Install python3
+      ansible.builtin.raw: test -e /usr/bin/python3 || (yum install -y python3)
+      register: python3
+      changed_when: "'installed' in python3.stdout"
+      when: (ansible_os_family == "RedHat" and ansible_distribution_major_version | int >= 8)
+    - name: Gather Facts
+      ansible.builtin.setup:
+      when: (ansible_distribution == "Ubuntu" and ansible_distribution_major_version | int >= 16)
+    - name: Ubuntu Bionic+, Redhat 8+ | Enforce python3 for ansible
+      ansible.builtin.set_fact:
+        ansible_python_interpreter: /usr/bin/python3
+      when: >
+        (ansible_distribution == "Ubuntu" and ansible_distribution_major_version | int >= 16) or
+        (ansible_os_family == "RedHat" and ansible_distribution_major_version | int >= 8)
+    - name: Debian | Refresh apt cache
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+      when: ansible_os_family == "Debian"
+    - name: Debug | var ansible_virtualization_type
+      ansible.builtin.debug:
+        var: ansible_virtualization_type
+    - name: Download Deno javascript runtime
+      ansible.builtin.get_url:
+        url: "{{ deno_uri }}"
+        dest: "/tmp/{{ deno_uri | basename }}"
+        mode: '0644'
+    - name: Unarchive Deno javascript runtime
+      ansible.builtin.unarchive:
+        src: "/tmp/{{ deno_uri | basename }}"
+        dest: /usr/local/bin/
+        mode: '0755'
+        owner: root
+  roles:
+    - juju4.harden_nginx
+    - noplanman.lufi
+  tasks:
+    - name: Deno make prod
+      ansible.builtin.command:  # noqa no-changed-when
+        cmd: make prod
+      args:
+        chdir: /var/www-lufi/src
