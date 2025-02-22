@@ -4,6 +4,7 @@ lufi_user: www-lufi
 lufi_group: www-lufi
 lufi_home: "/var/www-lufi"
 
+lufi_repo: https://framagit.org/fiat-tux/hat-softwares/lufi.git
 lufi_version: 0.07.0
 lufi_keep_updated: true
 

@@ -2,9 +2,7 @@
 
 - name: Lufi | Checkout git repository
   ansible.builtin.git:
-    repo: https://framagit.org/fiat-tux/hat-softwares/lufi.git
-#    repo: https://github.com/ldidry/lufi.git
-#    repo: https://framagit.org/noplanman/lufi.git
+    repo: "{{ lufi_repo }}"
     dest: "{{ lufi_working_dir }}"
     update: "{{ lufi_keep_updated }}"
     version: "{{ lufi_version }}"
