@@ -148,6 +148,19 @@ jobs:
           ./lufi-linux-x64 -u $GITHUB_WORKSPACE/$ANSIBLE_ROLE/README.md -s https://localhost -v || true
         if: ${{ always() }}
         continue-on-error: true
+      - name: After script - pylufic
+        run: |
+          set -x
+          ls
+          git clone https://framagit.org/setop/pylufic.git && cd pylufic
+          python3 -m venv .venv && . .venv/bin/activate
+          pip install -r requirements.txt
+          pip install -e .
+          pylufic -h || true
+          pylufic $GITHUB_WORKSPACE/$ANSIBLE_ROLE/README.md http://localhost:8080 || true
+          pylufic $GITHUB_WORKSPACE/$ANSIBLE_ROLE/README.md https://localhost:8080 || true
+        if: ${{ always() }}
+        continue-on-error: true
       - name: After script - logs
         run: |
           ls -l /var/www-lufi/src/log/
