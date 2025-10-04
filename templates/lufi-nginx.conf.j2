@@ -7,7 +7,7 @@ server {
     # Adapt this to your domain!
     server_name {{ lufi_servername }};
 
-{% if lufi_reverseproxy_https %}
+{% if lufi_reverseproxy_https | default(true) | bool %}
 {{ lufi_reverseproxy_https_conf }}
 {% endif %}
 
@@ -28,7 +28,7 @@ server {
         add_header Referrer-Policy origin;
 
         # Adapt this to your configuration (port, subdirectory (see below))
-        proxy_pass  http://{{ lufi_origin }};
+        proxy_pass  http://{{ lufi_origin | default('127.0.0.1:8080') }};
 
         # Really important! Lufi uses WebSocket, it won't work without this
         proxy_set_header Upgrade $http_upgrade;
